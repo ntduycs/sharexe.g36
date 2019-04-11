@@ -1,13 +1,11 @@
 package com.ttcnpm.g36.sharexe.model;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -24,6 +22,10 @@ public class Role {
     }
 
     public Role(RoleName name) {
+        this.name = name;
+    }
+
+    public void setName(RoleName name) {
         this.name = name;
     }
 }
