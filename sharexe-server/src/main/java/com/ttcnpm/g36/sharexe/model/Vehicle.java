@@ -1,74 +1,134 @@
 package com.ttcnpm.g36.sharexe.model;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.util.List;
+import java.sql.Timestamp;
 
-@Getter
 @Entity
-@Table(name = "vehicles")
 public class Vehicle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank
-    @Size(max = 50)
     private String brand;
-
-    @NotBlank
-    @Size(max = 50)
     private String model;
-
-    @NotBlank
-    @Size(max = 10)
     private String licensePlate;
-
-    @NotBlank
-    @Size(max = 50, min = 2)
     private Integer numSeats;
-
-    @ElementCollection
-    @CollectionTable(name = "vehicle_images", joinColumns = @JoinColumn(name = "vehicle_id"))
-    @Column(name = "vehicle_image_url")
-    private List<String> images;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "driver_id", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Driver owner;
 
-    public Vehicle(@NotBlank @Size(max = 50) String brand, @NotBlank @Size(max = 50) String model,
-                   @NotBlank @Size(max = 10) String licensePlate, @NotBlank @Size(max = 50, min = 2) Integer numSeats) {
-        this.brand = brand;
-        this.model = model;
-        this.licensePlate = licensePlate;
-        this.numSeats = numSeats;
+    public Driver getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Driver owner) {
+        this.owner = owner;
+    }
+
+    @Id
+    @Column(name = "id", nullable = false)
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Basic
+    @Column(name = "brand", nullable = false, length = 50)
+    public String getBrand() {
+        return brand;
     }
 
     public void setBrand(String brand) {
         this.brand = brand;
     }
 
+    @Basic
+    @Column(name = "model", nullable = false, length = 50)
+    public String getModel() {
+        return model;
+    }
+
     public void setModel(String model) {
         this.model = model;
+    }
+
+    @Basic
+    @Column(name = "license_plate", nullable = false, length = 20)
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
 
+    @Basic
+    @Column(name = "num_seats", nullable = false)
+    public Integer getNumSeats() {
+        return numSeats;
+    }
+
     public void setNumSeats(Integer numSeats) {
         this.numSeats = numSeats;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    @Basic
+    @Column(name = "created_at", nullable = true)
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setOwner(Driver owner) {
-        this.owner = owner;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Basic
+    @Column(name = "updated_at", nullable = true)
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vehicle vehicle = (Vehicle) o;
+
+        if (id != null ? !id.equals(vehicle.id) : vehicle.id != null) return false;
+        if (brand != null ? !brand.equals(vehicle.brand) : vehicle.brand != null) return false;
+        if (model != null ? !model.equals(vehicle.model) : vehicle.model != null) return false;
+        if (licensePlate != null ? !licensePlate.equals(vehicle.licensePlate) : vehicle.licensePlate != null)
+            return false;
+        if (numSeats != null ? !numSeats.equals(vehicle.numSeats) : vehicle.numSeats != null) return false;
+        if (createdAt != null ? !createdAt.equals(vehicle.createdAt) : vehicle.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(vehicle.updatedAt) : vehicle.updatedAt != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (brand != null ? brand.hashCode() : 0);
+        result = 31 * result + (model != null ? model.hashCode() : 0);
+        result = 31 * result + (licensePlate != null ? licensePlate.hashCode() : 0);
+        result = 31 * result + (numSeats != null ? numSeats.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 }

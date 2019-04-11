@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.Instant;
 
 /**
@@ -26,9 +27,9 @@ import java.time.Instant;
 public abstract class TimeAudit implements Serializable {
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private Instant createdAt;
+    private Timestamp createdAt;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private Instant updatedAt;
+    private Timestamp updatedAt;
 }
