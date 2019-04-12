@@ -4,23 +4,8 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.url">jdbc:mysql://localhost:3306/sharexe_new</property>
+    <property name="connection.url">jdbc:mysql://localhost:3306/sharexe</property>
     <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-    <mapping class="com.ttcnpm.g36.sharexe.model.ChatRoom"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.Driver"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.Message"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.Passenger"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.Trip"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.TripFeedback"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.TripParticipants"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.TripRequest"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.TripRestriction"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.User"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.Vehicle"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.VehicleImage"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.RoomMember"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.Role"/>
-    <mapping class="com.ttcnpm.g36.sharexe.model.UserRoles"/>
     <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 

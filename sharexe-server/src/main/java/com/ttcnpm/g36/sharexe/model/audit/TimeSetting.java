@@ -20,11 +20,10 @@ import java.time.Instant;
  * */
 
 @Getter
-@Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(allowGetters = true, value = {"createdAt", "updatedAt"})
-public abstract class TimeAudit implements Serializable {
+public abstract class TimeSetting implements Serializable {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;

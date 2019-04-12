@@ -1,133 +1,97 @@
 package com.ttcnpm.g36.sharexe.model;
 
-import com.ttcnpm.g36.sharexe.model.audit.TimeAudit;
+import com.ttcnpm.g36.sharexe.model.audit.OwnerSetting;
+import lombok.Getter;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.sql.Date;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+@Getter
 @Entity
-public class Trip extends TimeAudit {
+@Table(name = "trip")
+public class Trip extends OwnerSetting {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String from;
-    private String to;
-    private Date startDate;
-    private Date endDate;
-    private Integer maxSeats;
-    private Long price;
+
+    @NotNull
+    private String startingPoint;
+
+    @NotNull
+    private String destination;
+
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    private Date beginAt;
+
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    private Date endAt;
+
+    @NotNull
+    @Size(min = 2)
+    private Integer maxCapacity; // this doesn't include driver
+
+    @NotNull
+    private Float pricePerPerson;
+
     private String description;
 
-    @Id
-    @Column(name = "id")
-    public Long getId() {
-        return id;
+    @Enumerated(EnumType.STRING)
+    private TripStatus status;
+
+    @OneToMany(mappedBy = "tripInfo", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<TripRestriction> restrictions = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "participants_in_trip",
+            joinColumns = {@JoinColumn(name = "trip_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private List<User> participants = new ArrayList<>(); // including both driver and passengers
+
+    public void addRestriction(TripRestriction restriction) {
+        this.restrictions.add(restriction);
+        restriction.setTripInfo(this);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void removeRestriction(TripRestriction restriction) {
+        restriction.setTripInfo(null);
+        this.restrictions.remove(restriction);
     }
 
-    @Basic
-    @Column(name = "from")
-    public String getFrom() {
-        return from;
+    public void setBeginAt(Date beginAt) {
+        this.beginAt = beginAt;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setEndAt(Date endAt) {
+        this.endAt = endAt;
     }
 
-    @Basic
-    @Column(name = "to")
-    public String getTo() {
-        return to;
+    public void setMaxCapacity(Integer maxCapacity) {
+        this.maxCapacity = maxCapacity;
     }
 
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    @Basic
-    @Column(name = "start_date")
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    @Basic
-    @Column(name = "end_date")
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    @Basic
-    @Column(name = "max_seats")
-    public Integer getMaxSeats() {
-        return maxSeats;
-    }
-
-    public void setMaxSeats(Integer maxSeats) {
-        this.maxSeats = maxSeats;
-    }
-
-    @Basic
-    @Column(name = "price")
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
-    @Basic
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
+    public void setPricePerPerson(Float pricePerPerson) {
+        this.pricePerPerson = pricePerPerson;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Trip trip = (Trip) o;
-
-        if (id != null ? !id.equals(trip.id) : trip.id != null) return false;
-        if (from != null ? !from.equals(trip.from) : trip.from != null) return false;
-        if (to != null ? !to.equals(trip.to) : trip.to != null) return false;
-        if (startDate != null ? !startDate.equals(trip.startDate) : trip.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(trip.endDate) : trip.endDate != null) return false;
-        if (maxSeats != null ? !maxSeats.equals(trip.maxSeats) : trip.maxSeats != null) return false;
-        if (price != null ? !price.equals(trip.price) : trip.price != null) return false;
-        if (description != null ? !description.equals(trip.description) : trip.description != null) return false;
-
-        return true;
+    public void setStatus(TripStatus status) {
+        this.status = status;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (from != null ? from.hashCode() : 0);
-        result = 31 * result + (to != null ? to.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (maxSeats != null ? maxSeats.hashCode() : 0);
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
+    public void setRestrictions(List<TripRestriction> restrictions) {
+        this.restrictions = restrictions;
+    }
+
+    public void setParticipants(List<User> participants) {
+        this.participants = participants;
     }
 }
