@@ -2,6 +2,8 @@ package com.ttcnpm.g36.sharexe.model;
 
 import com.ttcnpm.g36.sharexe.model.audit.TimeSetting;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.util.*;
 
 @Getter
+@Setter
 
 @Entity
 @Table(name = "user", uniqueConstraints = {
@@ -111,35 +114,17 @@ public class User extends TimeSetting {
         request.setSender(null);
     }
 
-    public void setFullName(String fullName) {
+    public User(@NotNull @Size(max = 50) String fullName, @NotNull @Size(max = 100) @Email String email,
+                @NotNull @Size(max = 50) String username, @NotNull @Size(max = 50) String password,
+                @NotNull Date dateOfBirth, @NotNull UserGender sex) {
         this.fullName = fullName;
-    }
-
-    public void setPassword(String password) {
+        this.email = email;
+        this.username = username;
         this.password = password;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setOverallRating(Float overallRating) {
-        this.overallRating = overallRating;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
-    public void setChatRooms(Set<ChatRoom> chatRooms) {
-        this.chatRooms = chatRooms;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public User() {
     }
 }
