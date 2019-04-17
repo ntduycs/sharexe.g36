@@ -1,4 +1,4 @@
-package com.ttcnpm.g36.sharexe.Repository;
+package com.ttcnpm.g36.sharexe.repository;
 
 import com.ttcnpm.g36.sharexe.model.Role;
 import com.ttcnpm.g36.sharexe.model.UserRole;

@@ -2,8 +2,6 @@ package com.ttcnpm.g36.sharexe.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;

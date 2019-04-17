@@ -3,8 +3,6 @@ package com.ttcnpm.g36.sharexe.model;
 import com.ttcnpm.g36.sharexe.model.audit.TimeSetting;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

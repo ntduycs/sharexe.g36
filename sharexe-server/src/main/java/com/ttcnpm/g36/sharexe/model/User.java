@@ -2,7 +2,6 @@ package com.ttcnpm.g36.sharexe.model;
 
 import com.ttcnpm.g36.sharexe.model.audit.TimeSetting;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
@@ -26,21 +25,18 @@ public class User extends TimeSetting {
     private Long id;
 
     @NotNull
-    @Size(max = 50)
     private String fullName;
 
     @NotNull
     @NaturalId
-    @Size(max = 100)
     @Email
     private String email;
 
     @NotNull
-    @Size(max = 50)
     private String username;
 
     @NotNull
-    @Size(max = 50)
+    @Size(max = 100)
     private String password;
 
     @Temporal(TemporalType.DATE)
@@ -114,8 +110,8 @@ public class User extends TimeSetting {
         request.setSender(null);
     }
 
-    public User(@NotNull @Size(max = 50) String fullName, @NotNull @Size(max = 100) @Email String email,
-                @NotNull @Size(max = 50) String username, @NotNull @Size(max = 50) String password,
+    public User(@NotNull String fullName, @NotNull @Email String email,
+                @NotNull String username, @NotNull String password,
                 @NotNull Date dateOfBirth, @NotNull UserGender sex) {
         this.fullName = fullName;
         this.email = email;
