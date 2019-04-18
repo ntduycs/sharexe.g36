@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import qs from 'query-string';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 
@@ -8,11 +7,14 @@ import './CardifyMessage.css';
 class CardifyMessage extends Component {
     state = {
         contacts: [],
-        filterContacts: []
+        filterContacts: [],
+        participantFilterText: ''
     }
 
     componentDidMount = () => {
-        const contacts = [{
+        const { activeOtherParticipant, activeOtherParticipantName } = this.props;
+
+        let contacts = [{
             otherParticipant: 'ntn',
             otherParticipantName: 'Nguyễn Trọng Nghĩa',
             lastMessageContent: 'lmao',
@@ -23,26 +25,25 @@ class CardifyMessage extends Component {
             otherParticipantName: 'Nguyễn Văn A',
             lastMessageContent: 'this is the message',
             lastMessageDateTime: '1 minute ago',
-            otherParticipantAvatar: 'images/notification_head4.png'
-        }];
+            otherParticipantAvatar: 'images/notification_head5.png'
+            }];
+        
+        if (!contacts.some(contact => contact.otherParticipant === activeOtherParticipant)) {
+            contacts = [{ otherParticipant: activeOtherParticipant, otherParticipantName: activeOtherParticipantName, otherParticipantAvatar: 'images/notification_head2.png' }, ...contacts];
+        }
 
         this.setState({ contacts, filterContacts: JSON.parse(JSON.stringify(contacts)) });
     }
 
     onParticipantFilterTextChanged = (e) => {
-        const target = e.target.value.toLowerCase();
-
+        const target = e.target.value;
         this.setState((prevState) => ({
-            filterContacts: prevState.contacts.filter((contact) => contact.otherParticipant.toLowerCase().includes(target) || contact.otherParticipantName.toLowerCase().includes(target))
+            participantFilterText: target,
+            filterContacts: prevState.contacts.filter((contact) => contact.otherParticipant.toLowerCase().includes(target.toLowerCase()) || contact.otherParticipantName.toLowerCase().includes(target.toLowerCase()))
         }));
     }
 
     render() {
-        const activeOtherParticipant = qs.parse(this.props.location.search, {
-            ignoreQueryPrefix: true
-        }).username;
-
-
         return (
             <div className="col-lg-5">
                 <div className="cardify messaging_sidebar">
@@ -55,17 +56,16 @@ class CardifyMessage extends Component {
                             
                     </div>
                         
-
                     <div className="messaging__contents">
                         <div className="message_search">
-                            <input type="text" placeholder="Search messages..." onChange={this.onParticipantFilterTextChanged}/>
+                            <input type="text" placeholder="Search messages..." value={this.state.participantFilterText} onChange={this.onParticipantFilterTextChanged}/>
                             <span className="lnr lnr-magnifier"></span>
                         </div>
 
                         <div className="messages">
                             {this.state.filterContacts.map((contact) => (
-                                <NavLink to={"/messages?username=" + contact.otherParticipant}>
-                                    <div className={"message" + (contact.otherParticipant === activeOtherParticipant ? " active" : "")}>
+                                <NavLink to={`/messages?username=${contact.otherParticipant}&name=${contact.otherParticipantName}`}>
+                                    <div className={"message" + (contact.otherParticipant === this.props.activeOtherParticipant ? " active" : "")}>
                                         <div className="message__actions_avatar">
                                             <div className="actions">
                                                 <span className="fa fa-star-o"></span>

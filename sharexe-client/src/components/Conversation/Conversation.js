@@ -4,7 +4,7 @@ const Conversation = (props) => (
     <div className="col-lg-7">
         <div className="chat_area cardify">
             <div className="chat_area--title">
-                <h3>Message with &nbsp;<span className="name">Codepoet</span>
+                <h3>Message with &nbsp;<span className="name">{props.activeOtherParticipantName}</span>
                 </h3>
                 <div className="message_toolbar">
                     <button style={{background: 'none', outline: 'none', border: 0}} id="drop1" className="dropdown-trigger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
