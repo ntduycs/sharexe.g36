@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Conversation from '../../components/Conversation/Conversation';
 import CardifyMessage from '../../components/CardifyMessage/CardifyMessage';
 
-const MessagePage = (props) => (
-    <section class="message_area">
-        <div class="container">
-            <div class="row">
-                <CardifyMessage />
-                <Conversation />
-            </div>
-        </div>
-    </section>
-);
+class MessagePage extends Component {
+    
+
+    render() {
+        return (
+            <section className="message_area">
+                <div className="container">
+                    <div className="row">
+                        <CardifyMessage />
+                        <Conversation />
+                    </div>
+                </div>
+            </section>
+        );
+    }
+}
 
 export default MessagePage;

@@ -18,7 +18,7 @@
     function mobileMenu(triggerElem, dropdown) {
         var $dropDownTrigger = $(triggerElem + ' > a');
 
-        $dropDownTrigger.append('<span class="lnr lnr-plus-circle"></span>');
+        $dropDownTrigger.append('<span className="lnr lnr-plus-circle"></span>');
         $dropDownTrigger.find('span').on('click', function (e) {
             e.preventDefault();
             $(this).parents(triggerElem).find(dropdown).slideToggle().parents(triggerElem).siblings().find(dropdown).slideUp();
@@ -169,7 +169,7 @@
         var files = e.target.files;
         var attached = $('.attached');
         for (var i = 0; files.length > i; i++) {
-            attached.append('<p>' + files[i].name + '<span class="lnr lnr-cross"></span></p>');
+            attached.append('<p>' + files[i].name + '<span className="lnr lnr-cross"></span></p>');
         }
     });
 
@@ -241,8 +241,8 @@
         infinite: true,
         slidesToShow: 2,
         slidesToScroll: 1,
-        prevArrow: '<span class="lnr lnr-chevron-left"></span>',
-        nextArrow: '<span class="lnr lnr-chevron-right"></span>',
+        prevArrow: '<span className="lnr lnr-chevron-left"></span>',
+        nextArrow: '<span className="lnr lnr-chevron-right"></span>',
         responsive: [
             {
                 breakpoint: 768,

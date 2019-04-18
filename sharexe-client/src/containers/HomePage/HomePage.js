@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import * as uiActions from '../../actions/ui.action';
 import * as modalTypes from '../../constants/modalTypes';
@@ -13,6 +14,7 @@ class HomePage extends Component {
             <div>
                 Homepage
 
+                <Link to="/messages/123">here</Link>
                 <button onClick={this.props.openLoginModal}>Click me</button>
             </div>
         );

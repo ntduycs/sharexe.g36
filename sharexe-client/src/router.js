@@ -19,7 +19,7 @@ export default function router({ isAuthenticated }) {
                 <MainLayout>
                     <Switch>
                         <PrivateRoute path='/' exact component={HomePage} isAuthenticated={isAuthenticated} />
-                        <PrivateRoute path='/messages' exact component={MessagePage} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute path='/messages' component={MessagePage} isAuthenticated={isAuthenticated} />
                         <Route component={NotFoundPage} />
                     </Switch>
                 </MainLayout>
