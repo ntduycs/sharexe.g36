@@ -1,8 +1,11 @@
 package com.ttcnpm.g36.sharexe.service;
 
+import com.ttcnpm.g36.sharexe.payload.APIResponse;
 import com.ttcnpm.g36.sharexe.repository.UserRepository;
 import com.ttcnpm.g36.sharexe.model.User;
 import com.ttcnpm.g36.sharexe.security.UserPrincipal;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,4 +40,5 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return UserPrincipal.create(user);
     }
+
 }
