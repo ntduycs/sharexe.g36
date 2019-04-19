@@ -49,15 +49,16 @@ class Conversation extends PureComponent {
 
     componentDidMount = () => {
         /** TODO: Fetch messages */
+        window.scrollTo(0, this.messageContainer.current.offsetTop);
     }
 
     componentDidUpdate = (prevProps) => {
         if (prevProps.activeParticipant.username !== this.props.activeParticipant.username) {
             /** Case active contact changes */
-        /** TODO: Fetch messages */
+            /** TODO: Fetch messages */
             window.scrollTo(0, this.messageContainer.current.offsetTop);
         } else { 
-        /** Case new message arrives */
+            /** Case new message arrives */
         }
     }
 
