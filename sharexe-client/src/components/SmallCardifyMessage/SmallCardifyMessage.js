@@ -24,7 +24,7 @@ class SmallCardifyMessage extends Component {
         return (
             <div className="messages">
                 {contacts.map((contact) => (
-                    <Link key={contact.partnerUsername} to={`/messages?username=${contact.lastMessageUsername}&name=${contact.lastMessageFullName}`} className="message">
+                    <Link key={contact.partnerUsername} to={`/messages?username=${contact.partnerUsername}&name=${contact.partnerFullName}`} className="message">
                         <div className="message__actions_avatar">
                             <div className="avatar">
                                 <img src={`images/notification_head${contact.profileImage}.png`} alt="" />
@@ -40,7 +40,7 @@ class SmallCardifyMessage extends Component {
 
                                     <div className="time">{getDateTimeToNow(contact.lastMessageCreatedAt)}</div>
                                 </div>
-                                <p>{user.username !== contact.lastMessageUsername ? contact.lastMessageFullName : "You"}: &nbsp;{contact.lastMessageContent}</p>
+                                <p>{contact.lastMessageContent}</p>
                             </div>
                         </div>
                     </Link>
