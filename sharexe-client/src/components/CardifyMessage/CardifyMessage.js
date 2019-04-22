@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { getDateTimeToNow } from '../../utils/datetime';
 
 const cardifyMessage = (props) => (
     <div className="col-lg-5">
@@ -21,8 +22,8 @@ const cardifyMessage = (props) => (
 
                 <div className="messages">
                     {props.filterContacts.map((contact) => (
-                        <NavLink to={`/messages?username=${contact.username}&name=${contact.name}`}>
-                            <div className={"message" + (contact.username === props.activeParticipantUsername ? " active" : "")}>
+                        <NavLink key={contact.partnerUsername} to={`/messages?username=${contact.partnerUsername}&name=${contact.partnerFullName}`}>
+                            <div className={"message" + (contact.partnerUsername === props.activeParticipantUsername ? " active" : "")}>
                                 <div className="message__actions_avatar">
                                     <div className="actions">
                                         <span className="fa fa-star-o"></span>
@@ -34,18 +35,18 @@ const cardifyMessage = (props) => (
                                         </div>
                                     </div>
                                     <div className="avatar">
-                                        <img src={contact.avatar} alt="" />
+                                        <img src={`images/notification_head${contact.profileImage}.png`} alt="" />
                                     </div>
                                 </div>
 
                                 <div className="message_data">
                                     <div className="name_time">
                                         <div className="name">
-                                            <p>{contact.name}</p>
+                                            <p>{contact.partnerFullName}</p>
                                             <span className="lnr lnr-envelope"></span>
                                         </div>
 
-                                        <span className="time">{contact.lastMessageDateTime}</span>
+                                        <span className="time">{getDateTimeToNow(contact.lastMessageCreatedAt)}</span>
                                         <p className="MessageShortContent">{contact.lastMessageContent}</p>
                                     </div>
                                 </div>

@@ -1,57 +1,54 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import { getRecentContacts } from '../../services/message.service';
+import { getDateTimeToNow } from '../../utils/datetime';
+
 class SmallCardifyMessage extends Component {
     state = {
         contacts: []
     }
 
     fetchMessages = () => {
-        /** TODO: Fetch recent contacts */
-        this.setState({contacts: [{
-            username: 'ntn',
-            name: 'Nguyễn Trọng Nghĩa',
-            lastMessageContent: 'lmao',
-            lastMessageDateTime: 'Just now',
-            avatar: 'images/notification_head4.png'
-        }, {
-            username: 'nht',
-            name: 'Nguyễn Văn A',
-            lastMessageContent: 'this is the message',
-            lastMessageDateTime: '1 minute ago',
-            avatar: 'images/notification_head5.png'
-        }]});
+        getRecentContacts().then(({ data: contacts }) => {
+            this.setState({ contacts });
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
     render() {
+        const { user } = this.props;
+        const { contacts } = this.state;
+
         return (
             <div className="messages">
-                
-                {this.state.contacts.map((contact) => (
-                    <Link to={`/messages?username=${contact.username}&name=${contact.name}`} className="message">
-                    <div className="message__actions_avatar">
-                        <div className="avatar">
-                            <img src={contact.avatar} alt="" />
-                        </div>
-                    </div>
-                                                    
-                    <div className="message_data">
-                        <div className="name_time">
-                            <div>
-                                <div className="name">
-                                        <p>{contact.name}</p>
-                                </div>
-
-                                <div className="time">{contact.lastMessageDateTime}</div>
+                {contacts.map((contact) => (
+                    <Link key={contact.partnerUsername} to={`/messages?username=${contact.lastMessageUsername}&name=${contact.lastMessageFullName}`} className="message">
+                        <div className="message__actions_avatar">
+                            <div className="avatar">
+                                <img src={`images/notification_head${contact.profileImage}.png`} alt="" />
                             </div>
-                            <p>{contact.lastMessageContent}</p>
                         </div>
-                    </div>
-                </Link>
+                                                    
+                        <div className="message_data">
+                            <div className="name_time">
+                                <div>
+                                    <div className="name">
+                                        <p>{contact.partnerFullName}</p>
+                                    </div>
+
+                                    <div className="time">{getDateTimeToNow(contact.lastMessageCreatedAt)}</div>
+                                </div>
+                                <p>{user.username !== contact.lastMessageUsername ? contact.lastMessageFullName : "You"}: &nbsp;{contact.lastMessageContent}</p>
+                            </div>
+                        </div>
+                    </Link>
                 ))}
             </div>
         );
     }
 }
+
 
 export default SmallCardifyMessage;

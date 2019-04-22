@@ -1,65 +1,89 @@
 import React, { PureComponent, createRef } from 'react';
+import ContentEditable from 'react-contenteditable';
+import { animateScroll } from "react-scroll";
 
 import Message from './Message/Message';
+import { getRoomMessages } from '../../services/message.service';
 
 class Conversation extends PureComponent {
     state = {
-        messages: [
-            {
-                author: "Nguyễn Trọng Nghĩa",
-                avatar: "images/notification_head5.png",
-                createdAt: "Mar 2, 2019 at 2:14 pm",
-                content: `Faucibus rutrum. Phasellus sodales vulputate unread.`
-            },
-            {
-                author: "Nguyễn Trọng Nghĩa",
-                avatar: "images/notification_head5.png",
-                createdAt: "Mar 2, 2019 at 2:14 pm",
-                content: `Faucibus rutrum. Phasellus sodales vulputate urna, vel accumsan augue egestas a`
-            },
-            {
-                author: "Nguyễn Trọng Nghĩa",
-                avatar: "images/notification_head5.png",
-                createdAt: "Mar 2, 2019 at 2:14 pm",
-                content: `Faucibus rutrum. Phasellus sodales vulputate urna`
-            },
-            {
-                author: "Nguyễn Trọng Nghĩa",
-                avatar: "images/notification_head5.png",
-                createdAt: "Mar 2, 2019 at 2:14 pm",
-                content: `Faucibus rutrum. Phasellus`
-            }, {
-                author: "Nguyễn Trọng Nghĩa",
-                avatar: "images/notification_head5.png",
-                createdAt: "Mar 2, 2019 at 2:14 pm",
-                content: `Faucibus rutrum. Phasellus`
-            }, {
-                author: "Nguyễn Trọng Nghĩa",
-                avatar: "images/notification_head5.png",
-                createdAt: "Mar 2, 2019 at 2:14 pm",
-                content: `Faucibus rutrum. Phasellus sodales vulputate urna`
-            }
-        ]
+        messages: [],
+        html: ""
     };
 
     constructor(props) {
         super(props);
         this.messageContainer = createRef();
+        this.contentEditable = createRef();
     }
 
-    componentDidMount = () => {
-        /** TODO: Fetch messages */
+    componentDidMount = async () => {
+        try {
+            const { data: messages } = await getRoomMessages(this.props.activeParticipant.roomId);
+            this.setState({ messages });
+            this.contentEditable.current.focus();
+        } catch (e) {
+            console.log(e);
+        }
         window.scrollTo(0, this.messageContainer.current.offsetTop);
     }
 
-    componentDidUpdate = (prevProps) => {
-        if (prevProps.activeParticipant.username !== this.props.activeParticipant.username) {
+    componentDidUpdate = async (prevProps, prevState) => {
+        if (prevProps.activeParticipant.partnerUsername !== this.props.activeParticipant.partnerUsername) {
             /** Case active contact changes */
-            /** TODO: Fetch messages */
+            try {
+                const { data: messages } = await getRoomMessages(this.props.activeParticipant.roomId);
+                this.setState({ messages });
+                this.contentEditable.current.focus();                
+            } catch (e) {
+                console.log(e);
+            }
             window.scrollTo(0, this.messageContainer.current.offsetTop);
-        } else { 
-            /** Case new message arrives */
+        } else {
+        /** Case new message arrives */
+            if (prevState.messages.length !== this.state.messages.length) {
+                animateScroll.scrollToBottom({
+                    containerId: "message-container",
+                    duration: 0
+                });
+            }
         }
+    }
+
+    onInputChanged = (e) => {
+        if (e.target.value.includes("<div><br></div>")) {
+            const submitText = this.state.html;
+            this.props.hoistContact({ ...this.props.activeParticipant, lastMessageContent: submitText });
+            this.setState((prevState) => ({
+                html: "",
+                messages: [...prevState.messages,
+                    {
+                        id: new Date().getTime(),
+                        text: prevState.html,
+                        author: this.props.activeParticipant.partnerUsername,
+                        authorName: this.props.activeParticipant.partnerFullName,
+                        createdAt: new Date().getTime()
+                    }]
+            }));
+        } else {
+            this.setState({ html: e.target.value });
+        }
+    }
+
+    onButtonClicked = () => {
+        const submitText = this.state.html;
+        this.props.hoistContact({ ...this.props.activeParticipant, lastMessageContent: submitText });
+        this.setState((prevState) => ({
+            html: "",
+            messages: [...prevState.messages,
+            {
+                id: new Date().getTime(),
+                text: prevState.html,
+                author: this.props.activeParticipant.partnerUsername,
+                authorName: this.props.activeParticipant.partnerFullName,
+                createdAt: new Date().getTime()
+            }]
+        }));
     }
 
     render() {
@@ -67,7 +91,7 @@ class Conversation extends PureComponent {
             <div className="col-lg-7" ref={this.messageContainer}>
                 <div className="chat_area cardify">
                     <div className="chat_area--title">
-                        <h3>Message with &nbsp;<span className="name">{this.props.activeParticipant.name}</span>
+                        <h3>Message with &nbsp;<span className="name">{this.props.activeParticipant.partnerFullName}</span>
                         </h3>
                         <div className="message_toolbar">
                             <button style={{ background: 'none', outline: 'none', border: 0 }} id="drop1" className="dropdown-trigger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -90,84 +114,14 @@ class Conversation extends PureComponent {
                             
                     </div>
 
-                    <div className="chat_area--conversation">
-                        {this.state.messages.map((message) => <Message {...message}/>)}
-                            
-                        <div className="conversation">
-                            <div className="head">
-                                <div className="chat_avatar">
-                                    <img src="images/notification_head4.png" alt="Notification avatar" />
-                                </div>
-
-                                <div className="name_time">
-                                    <div>
-                                        <h4>AazzTech</h4>
-                                        <p>Mar 2, 2019 at 2:14 pm</p>
-                                    </div>
-                                    <span className="email">Me</span>
-                                </div>
-                                    
-                            </div>
-                                
-                            <div className="body">
-                                <p>Faucibus rutrum. Phasellus sodales vulputate urna, vel accumsan augue egestas ac. Donec
-                                    vitae leo at sem lobortis porttitor eu conse quat risus. Mauris sed congue orci.
-                                        Donec ultrices faucibus rutrum. Phasellus sodales vulputate urna, vel accumsan augue.</p>
-                            </div>
-
-                        </div>
-                            
-
-                        <div className="conversation">
-                            <div className="head">
-                                <div className="chat_avatar">
-                                    <img src="images/notification_head5.png" alt="Notification avatar" />
-                                </div>
-
-                                <div className="name_time">
-                                    <div>
-                                        <h4>Codepoet</h4>
-                                        <p>Mar 2, 2019 at 2:14 pm</p>
-                                    </div>
-                                    <span className="email">jonathan@domain.com</span>
-                                </div>
-                                    
-                            </div>
-                                
-                            <div className="body">
-                                <p>Faucibus rutrum. Phasellus sodales vulputate urna, vel accumsan augue egestas ac. Donec
-                                        vitae leo at sem lobortis porttitor.</p>
-                                <div className="attachments">
-                                    <div className="attachment_head">
-                                        <p>
-                                            <span className="lnr lnr-paperclip"></span> 2 Attachments</p>
-                                        <a href="#">
-                                            <span className="lnr lnr-download"></span> Download</a>
-                                    </div>
-
-                                    <div className="attachment">
-                                        <ul>
-                                            <li>
-                                                <a href="images/att_av.jpg" className="venobox">
-                                                    <img src="images/att_av.jpg" alt="image attachment" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="images/att_av2.jpg" className="venobox">
-                                                    <img src="images/att_av2.jpg" alt="image attachment" />
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div className="chat_area--conversation" id="message-container">
+                        {this.state.messages.map((message) => <Message key={message.id} {...message} profileImage={this.props.activeParticipant.profileImage} />)}
                     </div>
 
-                    <div className="message_composer" style={{display: 'flex'}}>
-                        <div className="composer_editor" contentEditable="true" placeholder="Type message here..." style={{flexGrow: '1'}}></div>
-                        <div className="btns" style={{flexBasis:100, marginTop: 10}}>
-                            <button className="btn send btn--sm btn--round">Reply</button>
+                    <div className="message_composer" style={{ display: 'flex', background: '#f4f5f8', padding: 5, paddingTop: 0 }}>
+                        <ContentEditable innerRef={this.contentEditable} html={this.state.html} className="composer_editor" placeholder="Type message here..." style={{ flexGrow: '1', borderRadius: 5 }} onChange={this.onInputChanged} />
+                        <div className="btns" style={{ flexBasis: 100, marginTop: 10 }}>
+                            <button onClick={this.onButtonClicked} className="btn send btn--sm btn--round">Send</button>
                         </div>
                     </div>
                 </div>

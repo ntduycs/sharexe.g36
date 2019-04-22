@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './Header.css';
 import SmallCardifyMessage from '../SmallCardifyMessage/SmallCardifyMessage';
@@ -90,7 +91,7 @@ class Header extends Component {
                                                         <Link to="/messages">View All</Link>
                                                     </div>
 
-                                                    <SmallCardifyMessage ref={this.smallCardifyMessage}/>
+                                                    <SmallCardifyMessage ref={this.smallCardifyMessage} user={this.props.user}/>
 
                                                 </div>
                                             </li>
@@ -434,4 +435,6 @@ class Header extends Component {
     }
 }
 
-export default Header;
+const mapStateToProps = ({ auth: { user } }) => ({ user });
+
+export default connect(mapStateToProps)(Header);

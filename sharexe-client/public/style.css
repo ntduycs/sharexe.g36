@@ -7617,6 +7617,7 @@ ul.nav-tabs.nav--tabs2 li a::before {
   right: calc((100% - 1140px)/2);
   z-index: 111;
   bottom: 20px;
+  right: 20px;
 }
 
 .go_top span {
