@@ -1,14 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import { getDateTimeToNow } from '../../utils/datetime';
+
 
 const cardifyMessage = (props) => (
     <div className="col-lg-5">
         <div className="cardify messaging_sidebar">
             <div className="messaging__header" style={{ display: 'flex', justifyContent: 'center' }}>
                 <div className="messaging_menu">
-                    <span id="drop2" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span className="lnr lnr-inbox"></span>Inbox<span className="msg">{props.unreadMessagesCount}</span>
+                    <span id="drop2" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style={{display:"flex", alignItems: "center"}}>
+                        <span className="lnr lnr-inbox" style={{fontSize: 18}}></span><span>INBOX</span>
                     </span>
                 </div>
                             
@@ -59,4 +62,6 @@ const cardifyMessage = (props) => (
     </div>
 );
 
-export default cardifyMessage;
+const mapStateToProps = ({ auth: { user } }) => ({ user });
+
+export default connect(mapStateToProps)(cardifyMessage);

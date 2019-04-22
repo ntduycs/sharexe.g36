@@ -34,7 +34,6 @@ class Header extends Component {
                                             <li className="has_dropdown">
                                                 <div className="icon_wrap">
                                                     <span className="lnr lnr-alarm"></span>
-                                                    <span className="notification_count noti">2</span>
                                                 </div>
 
                                                 <div className="dropdowns notification--dropdown">
@@ -82,7 +81,6 @@ class Header extends Component {
                                             <li className="has_dropdown" onMouseEnter={() => this.smallCardifyMessage.current.fetchMessages()}>
                                                 <div className="icon_wrap">
                                                     <span className="lnr lnr-envelope"></span>
-                                                    <span className="notification_count msg">3</span>
                                                 </div>
 
                                                 <div className="dropdowns messaging--dropdown">
@@ -105,7 +103,7 @@ class Header extends Component {
                                         </div>
                                         <div className="autor__info">
                                             <p className="name">
-                                                Duy Nguyen
+                                                {this.props.user && this.props.user.id} + {this.props.user && this.props.user.username}
                                     </p>
                                             <p className="ammount">$20.45</p>
                                         </div>

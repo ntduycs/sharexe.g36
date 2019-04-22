@@ -1,31 +1,49 @@
-import React from 'react';
-import { connect} from 'react-redux';
+import React, { Component } from 'react';
 
 import { getDateTimeToNow } from '../../../utils/datetime';
+import { addMessage } from '../../../services/message.service';
 
-const message = (props) => (
-    <div className="conversation">
-        <div className="head">
-            <div className="chat_avatar">
-                <img src={`images/notification_head${props.author === props.user.username ? props.user.profileImage : props.profileImage}.png`} alt="Notification avatar" />
-            </div>
+class Message extends Component {
+    componentDidMount = async () => {
+        if (this.props.isNew) {
+            try {
+                await addMessage(this.props.text, this.props.roomId);
+            } catch (e) {
+                alert(e);
+            }
+        }
+    }
 
-            <div className="name_time">
-                <div>
-                    <h4>{props.author === props.user.username ? "You" : props.authorName}</h4>
-                    <p></p>
-                </div>
-                <span className="email">{getDateTimeToNow(props.createdAt)}</span>
-            </div>
+    shouldComponentUpdate = () => {
+        return false;
+    }
+
+    render() {
+        return (
+            (
+                <div className="conversation">
+                    <div className="head">
+                        <div className="chat_avatar">
+                            <img src={`images/notification_head${this.props.author === this.props.user.username ? this.props.user.profileImage : this.props.profileImage}.png`} alt="Notification avatar" />
+                        </div>
+
+                        <div className="name_time">
+                            <div>
+                                <h4>{this.props.author === this.props.user.username ? "You" : this.props.authorName}</h4>
+                                <p></p>
+                            </div>
+                            <span className="email">{getDateTimeToNow(this.props.createdAt)}</span>
+                        </div>
                                     
-        </div>
+                    </div>
 
-        <div className="body">
-            <p>{props.text}</p>
-        </div>
-    </div>
-);
+                    <div className="body">
+                        <p>{this.props.text}</p>
+                    </div>
+                </div>
+            )
+        );
+    }
+}
 
-const mapStateToProps = ({ auth: { user } }) => ({ user });
-
-export default connect(mapStateToProps)(message);
+export default Message;

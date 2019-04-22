@@ -3,13 +3,21 @@ import { connect } from 'react-redux';
 
 import Router from './router';
 
-import * as actions from './actions/auth.action';
+import * as authActions from './actions/auth.action';
 
 import './App.css';
 
 class App extends Component {
     state = {
         isLoading: true
+    }
+
+    componentDidMount = () => {
+        window.onunload = () => {
+            if (this.props.isAuthenticated) {
+                this.props.logout(this.props.user.id, true);
+            }
+        }
     }
 
     componentWillMount = () => {
@@ -27,13 +35,14 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = ({ auth: { isAuthenticated } }) => ({ isAuthenticated });
+const mapStateToProps = ({ auth: { isAuthenticated, user } }) => ({ isAuthenticated, user });
 
 const mapDispatchToProps = dispatch => ({
     getMe: async (finishLoading) => {
-        await dispatch(actions.getMe());
+        await dispatch(authActions.getMe());
         finishLoading();
-    }
+    },
+    logout: (userId, isClosed) => dispatch(authActions.logOutUser(userId, isClosed))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

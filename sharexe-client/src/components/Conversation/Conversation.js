@@ -1,9 +1,14 @@
 import React, { PureComponent, createRef } from 'react';
 import ContentEditable from 'react-contenteditable';
+import { connect} from 'react-redux';
 import { animateScroll } from "react-scroll";
 
 import Message from './Message/Message';
+
 import { getRoomMessages } from '../../services/message.service';
+import { createChatRoom } from '../../services/room.service';
+import * as socketEvents from '../../constants/socketEvents';
+import Socket from '../../socket';
 
 class Conversation extends PureComponent {
     state = {
@@ -15,6 +20,11 @@ class Conversation extends PureComponent {
         super(props);
         this.messageContainer = createRef();
         this.contentEditable = createRef();
+
+        Socket.getInstance().on(socketEvents.A_USER_SENDS_MESSAGE, ({ message, roomId, partnerFullName, partnerUsername , profileImage}) => {
+            if (this.props.activeParticipant.roomId === roomId)  this.setState((prevState) => ({ messages: [...prevState.messages, message] }));
+            this.props.hoistContactForReceiver(roomId, message, partnerFullName, partnerUsername, profileImage);
+        });
     }
 
     componentDidMount = async () => {
@@ -40,7 +50,7 @@ class Conversation extends PureComponent {
             }
             window.scrollTo(0, this.messageContainer.current.offsetTop);
         } else {
-        /** Case new message arrives */
+            /** Case new message arrives */
             if (prevState.messages.length !== this.state.messages.length) {
                 animateScroll.scrollToBottom({
                     containerId: "message-container",
@@ -52,38 +62,53 @@ class Conversation extends PureComponent {
 
     onInputChanged = (e) => {
         if (e.target.value.includes("<div><br></div>")) {
-            const submitText = this.state.html;
-            this.props.hoistContact({ ...this.props.activeParticipant, lastMessageContent: submitText });
-            this.setState((prevState) => ({
-                html: "",
-                messages: [...prevState.messages,
-                    {
-                        id: new Date().getTime(),
-                        text: prevState.html,
-                        author: this.props.activeParticipant.partnerUsername,
-                        authorName: this.props.activeParticipant.partnerFullName,
-                        createdAt: new Date().getTime()
-                    }]
-            }));
-        } else {
-            this.setState({ html: e.target.value });
+            this.onFormSubmit();
+        } else  {
+            this.setState({ html: e.target.value.replace(/&nbsp;/gi, ' ') });
         }
     }
 
-    onButtonClicked = () => {
-        const submitText = this.state.html;
-        this.props.hoistContact({ ...this.props.activeParticipant, lastMessageContent: submitText });
+    onFormSubmit = async () => {
+        const submitText = this.state.html.trim();
+
+        let { roomId } = this.props.activeParticipant;
+
+        if (!roomId) {
+            const { data } = await createChatRoom(this.props.activeParticipant.partnerUsername);
+            roomId = data;
+            Socket.getInstance().emit(socketEvents.THIS_USER_INVITES, ({ roomId, partnerId: this.props.activeParticipant.partnerId }));
+        }
+        
+        this.props.hoistContact(roomId, submitText);
+
+        console.log('heere');
         this.setState((prevState) => ({
             html: "",
             messages: [...prevState.messages,
             {
                 id: new Date().getTime(),
-                text: prevState.html,
-                author: this.props.activeParticipant.partnerUsername,
-                authorName: this.props.activeParticipant.partnerFullName,
+                roomId,
+                isNew: true,
+                text: submitText,
+                author: this.props.user.username,
+                authorName: this.props.user.fullName,
                 createdAt: new Date().getTime()
             }]
         }));
+
+        Socket.getInstance().emit(socketEvents.THIS_USER_SENDS_MESSAGE, {
+            message: {
+                id: new Date().getTime(),
+                text: submitText,
+                author: this.props.user.username,
+                authorName: this.props.user.fullName,
+                createdAt: new Date().getTime(),
+            },
+            roomId,
+            partnerFullName: this.props.user.fullName,
+            partnerUsername: this.props.user.username,
+            profileImage: this.props.user.profileImage
+        });
     }
 
     render() {
@@ -115,13 +140,13 @@ class Conversation extends PureComponent {
                     </div>
 
                     <div className="chat_area--conversation" id="message-container">
-                        {this.state.messages.map((message) => <Message key={message.id} {...message} profileImage={this.props.activeParticipant.profileImage} />)}
+                        {this.state.messages.map((message) => <Message key={message.id} {...message} user={this.props.user} profileImage={this.props.activeParticipant.profileImage} />)}
                     </div>
 
                     <div className="message_composer" style={{ display: 'flex', background: '#f4f5f8', padding: 5, paddingTop: 0 }}>
                         <ContentEditable innerRef={this.contentEditable} html={this.state.html} className="composer_editor" placeholder="Type message here..." style={{ flexGrow: '1', borderRadius: 5 }} onChange={this.onInputChanged} />
                         <div className="btns" style={{ flexBasis: 100, marginTop: 10 }}>
-                            <button onClick={this.onButtonClicked} className="btn send btn--sm btn--round">Send</button>
+                            <button onClick={this.onFormSubmit} className="btn send btn--sm btn--round">Send</button>
                         </div>
                     </div>
                 </div>
@@ -130,4 +155,7 @@ class Conversation extends PureComponent {
     }
 }
 
-export default Conversation;
+const mapStateToProps = ({ auth: { user } }) => ({ user });
+
+
+export default connect(mapStateToProps)(Conversation);
