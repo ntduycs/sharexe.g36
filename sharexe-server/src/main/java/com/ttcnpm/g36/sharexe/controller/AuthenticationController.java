@@ -86,7 +86,7 @@ public class AuthenticationController {
 
         user.setRoles(Collections.singleton(userRole));
 
-        User result = userRepository.save(user);
+            User result = userRepository.save(user);
 
         // After a user is created in the server, we're getting the API path
         // which can be used to fetch the details of the new user (/api/users/{usernameOfNewlyCreatedUser})
