@@ -4,6 +4,7 @@ import com.ttcnpm.g36.sharexe.model.audit.TimeSetting;
 import lombok.Getter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ public class ChatRoom extends TimeSetting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_id")
     @Fetch(FetchMode.SELECT)
     private List<Message> messageList = new ArrayList<>();
 
@@ -41,7 +43,15 @@ public class ChatRoom extends TimeSetting {
         this.messageList = messageList;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public User getPartner(User user) {
+        if (users.get(0).getId() != user.getId()) {
+            return users.get(0);
+        } else {
+            return users.get(1);
+        }
     }
 }

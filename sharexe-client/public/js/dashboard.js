@@ -17,7 +17,7 @@
       /* custom legend function */
       function customLegend(chart) {
           var text = [];
-          text.push('<ul class="piechart'+ chart.id + '-legend">');
+          text.push('<ul className="piechart'+ chart.id + '-legend">');
           var data = chart.data;
           var datasets = data.datasets;
           var labels = data.labels;

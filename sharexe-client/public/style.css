@@ -7617,6 +7617,7 @@ ul.nav-tabs.nav--tabs2 li a::before {
   right: calc((100% - 1140px)/2);
   z-index: 111;
   bottom: 20px;
+  right: 20px;
 }
 
 .go_top span {
@@ -11389,7 +11390,7 @@ span.counter {
 }
 
 .messaging_sidebar .messaging__contents .messages, .recent_message .messaging__contents .messages, .recent_message .dashboard__content .messages {
-  max-height: 1094px;
+  max-height: 480px;
   overflow-Y: scroll;
   margin-right: 2px;
 }
@@ -11551,12 +11552,34 @@ span.counter {
 }
 
 .chat_area .chat_area--conversation, .recent_message .dashboard__content .chat_area--conversation {
+  max-height: 480px;
   padding: 30px;
+  overflow: auto;
 }
 
 .chat_area .chat_area--conversation .conversation, .recent_message .dashboard__content .chat_area--conversation .conversation {
   border-bottom: 1px solid #ececec;
   padding-bottom: 26px;
+}
+
+/* width */
+.chat_area--conversation::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.chat_area--conversation::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.chat_area--conversation::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.chat_area--conversation::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .chat_area .chat_area--conversation .conversation + .conversation, .recent_message .dashboard__content .chat_area--conversation .conversation + .conversation {

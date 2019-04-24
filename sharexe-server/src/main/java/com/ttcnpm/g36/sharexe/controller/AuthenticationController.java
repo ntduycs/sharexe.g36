@@ -1,15 +1,13 @@
 package com.ttcnpm.g36.sharexe.controller;
 
+import com.ttcnpm.g36.sharexe.model.ChatRoom;
+import com.ttcnpm.g36.sharexe.payload.*;
 import com.ttcnpm.g36.sharexe.repository.RoleRepository;
 import com.ttcnpm.g36.sharexe.repository.UserRepository;
 import com.ttcnpm.g36.sharexe.exception.ServerException;
 import com.ttcnpm.g36.sharexe.model.Role;
 import com.ttcnpm.g36.sharexe.model.User;
 import com.ttcnpm.g36.sharexe.model.UserRole;
-import com.ttcnpm.g36.sharexe.payload.APIResponse;
-import com.ttcnpm.g36.sharexe.payload.AuthenticationResponse;
-import com.ttcnpm.g36.sharexe.payload.LoginRequest;
-import com.ttcnpm.g36.sharexe.payload.SignupRequest;
 import com.ttcnpm.g36.sharexe.utils.JwtTokenProvider;
 import com.ttcnpm.g36.sharexe.utils.UserGenderConverter;
 import org.springframework.http.HttpStatus;
@@ -18,16 +16,20 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -46,6 +48,20 @@ public class AuthenticationController {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
+    }
+
+    @Transactional
+    @GetMapping("/me")
+    public UserResponse getMe(HttpServletRequest request) {
+        Object userId = request.getAttribute("userId");
+
+        if (userId == null) {
+            System.out.println(userId);
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        User user = userRepository.findById((long)userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new UserResponse(user);
     }
 
     @PostMapping("/login")
@@ -80,6 +96,7 @@ public class AuthenticationController {
                 request.getPassword(), request.getDateOfBirth(), UserGenderConverter.normalize(request.getSex()));
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setProfileImage(Integer.toString(new Random().nextInt(6                                                                            ) + 1));
 
         Role userRole = roleRepository.findByName(UserRole.NEW_USER)
                 .orElseThrow(() -> new ServerException("User Role not set."));
