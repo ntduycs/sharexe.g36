@@ -16,8 +16,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rooms")
 public class ChatRoomController {
-    @Autowired
-    private ChatRoomService chatRoomService;
+    private final ChatRoomService chatRoomService;
+
+    public ChatRoomController(ChatRoomService chatRoomService) {
+        this.chatRoomService = chatRoomService;
+    }
 
     /** Get recent contacts */
     @GetMapping("/")

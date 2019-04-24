@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MessageRequest {
-    private String messageContent;
+public class ImageResponse {
+    private String imageUrl;
 }

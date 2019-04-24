@@ -28,7 +28,7 @@ public class Driver implements Serializable {
 
     void addVehicle(Vehicle vehicle) {
         this.vehicles.add(vehicle);
-        vehicle.setOwner(this);
+        vehicle.setOwner(userInfo);
     }
 
     void removeVehicle(Vehicle vehicle) {

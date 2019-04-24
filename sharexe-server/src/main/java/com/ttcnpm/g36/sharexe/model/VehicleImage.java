@@ -22,6 +22,10 @@ public class VehicleImage extends TimeSetting implements Serializable {
     @NotNull
     private String imageUrl;
 
+    public VehicleImage(@NotNull String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public void setVehicleInfo(Vehicle vehicleInfo) {
         this.vehicleInfo = vehicleInfo;
     }

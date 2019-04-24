@@ -32,12 +32,12 @@ public class Vehicle extends TimeSetting {
     private String licensePlate;
 
     @NotNull
-    @Size(min = 2)
+//    @Size(min = 2)
     private Integer capacity;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
-    private Driver owner;
+    private User owner;
 
     @OneToMany(mappedBy = "vehicleInfo", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<VehicleImage> images = new ArrayList<>();
@@ -64,11 +64,15 @@ public class Vehicle extends TimeSetting {
         this.licensePlate = licensePlate;
     }
 
-    public void setOwner(Driver owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 
     public void setImages(List<VehicleImage> images) {
         this.images = images;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 }

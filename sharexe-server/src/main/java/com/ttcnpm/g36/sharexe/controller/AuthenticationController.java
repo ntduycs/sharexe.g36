@@ -1,13 +1,12 @@
 package com.ttcnpm.g36.sharexe.controller;
 
-import com.ttcnpm.g36.sharexe.model.ChatRoom;
-import com.ttcnpm.g36.sharexe.payload.*;
-import com.ttcnpm.g36.sharexe.repository.RoleRepository;
-import com.ttcnpm.g36.sharexe.repository.UserRepository;
 import com.ttcnpm.g36.sharexe.exception.ServerException;
 import com.ttcnpm.g36.sharexe.model.Role;
 import com.ttcnpm.g36.sharexe.model.User;
 import com.ttcnpm.g36.sharexe.model.UserRole;
+import com.ttcnpm.g36.sharexe.payload.*;
+import com.ttcnpm.g36.sharexe.repository.RoleRepository;
+import com.ttcnpm.g36.sharexe.repository.UserRepository;
 import com.ttcnpm.g36.sharexe.utils.JwtTokenProvider;
 import com.ttcnpm.g36.sharexe.utils.UserGenderConverter;
 import org.springframework.http.HttpStatus;
@@ -23,12 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @RestController
@@ -56,11 +52,10 @@ public class AuthenticationController {
         Object userId = request.getAttribute("userId");
 
         if (userId == null) {
-            System.out.println(userId);
             throw new UsernameNotFoundException("User not found");
         }
 
-        User user = userRepository.findById((long)userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findById((long) userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new UserResponse(user);
     }
 
@@ -96,14 +91,14 @@ public class AuthenticationController {
                 request.getPassword(), request.getDateOfBirth(), UserGenderConverter.normalize(request.getSex()));
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setProfileImage(Integer.toString(new Random().nextInt(6                                                                            ) + 1));
+        user.setProfileImage(Integer.toString(new Random().nextInt(6) + 1));
 
         Role userRole = roleRepository.findByName(UserRole.NEW_USER)
                 .orElseThrow(() -> new ServerException("User Role not set."));
 
         user.setRoles(Collections.singleton(userRole));
 
-            User result = userRepository.save(user);
+        User result = userRepository.save(user);
 
         // After a user is created in the server, we're getting the API path
         // which can be used to fetch the details of the new user (/api/users/{usernameOfNewlyCreatedUser})

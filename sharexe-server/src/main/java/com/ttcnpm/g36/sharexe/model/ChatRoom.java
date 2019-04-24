@@ -48,7 +48,7 @@ public class ChatRoom extends TimeSetting {
     }
 
     public User getPartner(User user) {
-        if (users.get(0).getId() != user.getId()) {
+        if (!users.get(0).getId().equals(user.getId())) {
             return users.get(0);
         } else {
             return users.get(1);
