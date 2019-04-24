@@ -1,9 +1,12 @@
 package com.ttcnpm.g36.sharexe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttcnpm.g36.sharexe.model.audit.TimeSetting;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -52,16 +55,17 @@ public class User extends TimeSetting {
 
     private Float overallRating;
 
+    @ColumnDefault("1")
     private String profileImage;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_has_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "users")
-    private Set<ChatRoom> chatRooms = new HashSet<>();
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "participants")
     private Set<Trip> joinedTrips = new HashSet<>();
@@ -77,7 +81,7 @@ public class User extends TimeSetting {
 
     public void joinChatRoom(ChatRoom room) {
         this.chatRooms.add(room);
-        room.getUsers().add(this);
+        room.addUser(this);
     }
 
     public void leaveChatRoom(ChatRoom room) {

@@ -1,11 +1,8 @@
 import * as actionTypes from '../constants/actionTypes';
-import { loadUserData } from '../utils/localStorage';
-
-const userData = loadUserData();
 
 const initialState = {
-    isAuthenticated: Boolean(userData),
-    user: userData
+    isAuthenticated: false,
+    user: undefined
 };
 
 export default function authReducer(state = initialState, action) {
@@ -14,7 +11,7 @@ export default function authReducer(state = initialState, action) {
             return { ...state, isAuthenticated: true, ...action.payload };
 
         case actionTypes.LOGIN_USER_FAILED:
-            return { ...state, isAuthenticated: false, user: {} };
+            return { ...state, isAuthenticated: false, user: undefined };
         
         case actionTypes.LOGOUT_USER:
             return { ...state, isAuthenticated: false, user: undefined };
