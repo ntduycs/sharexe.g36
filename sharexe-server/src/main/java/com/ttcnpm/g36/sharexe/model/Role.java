@@ -15,5 +15,5 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @NaturalId
-    private UserRole name;
+    private RoleName name;
 }

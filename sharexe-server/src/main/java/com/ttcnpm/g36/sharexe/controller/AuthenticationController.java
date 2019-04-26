@@ -3,7 +3,7 @@ package com.ttcnpm.g36.sharexe.controller;
 import com.ttcnpm.g36.sharexe.exception.ServerException;
 import com.ttcnpm.g36.sharexe.model.Role;
 import com.ttcnpm.g36.sharexe.model.User;
-import com.ttcnpm.g36.sharexe.model.UserRole;
+import com.ttcnpm.g36.sharexe.model.RoleName;
 import com.ttcnpm.g36.sharexe.payload.*;
 import com.ttcnpm.g36.sharexe.repository.RoleRepository;
 import com.ttcnpm.g36.sharexe.repository.UserRepository;
@@ -93,7 +93,7 @@ public class AuthenticationController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setProfileImage(Integer.toString(new Random().nextInt(6) + 1));
 
-        Role userRole = roleRepository.findByName(UserRole.NEW_USER)
+        Role userRole = roleRepository.findByName(RoleName.NEW_USER)
                 .orElseThrow(() -> new ServerException("User Role not set."));
 
         user.setRoles(Collections.singleton(userRole));

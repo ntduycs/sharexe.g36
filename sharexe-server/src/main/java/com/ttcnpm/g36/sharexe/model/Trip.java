@@ -2,15 +2,17 @@ package com.ttcnpm.g36.sharexe.model;
 
 import com.ttcnpm.g36.sharexe.model.audit.OwnerSetting;
 import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "trip")
 public class Trip extends OwnerSetting {
@@ -33,7 +35,7 @@ public class Trip extends OwnerSetting {
     private Date endAt;
 
     @NotNull
-    @Size(min = 2)
+    @Range(min = 2)
     private Integer maxCapacity; // this doesn't include driver
 
     @NotNull
@@ -63,35 +65,9 @@ public class Trip extends OwnerSetting {
         this.restrictions.remove(restriction);
     }
 
-    public void setBeginAt(Date beginAt) {
-        this.beginAt = beginAt;
+    public void addParticipant(User participant) {
+        participants.add(participant);
     }
 
-    public void setEndAt(Date endAt) {
-        this.endAt = endAt;
-    }
 
-    public void setMaxCapacity(Integer maxCapacity) {
-        this.maxCapacity = maxCapacity;
-    }
-
-    public void setPricePerPerson(Float pricePerPerson) {
-        this.pricePerPerson = pricePerPerson;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setStatus(TripStatus status) {
-        this.status = status;
-    }
-
-    public void setRestrictions(List<TripRestriction> restrictions) {
-        this.restrictions = restrictions;
-    }
-
-    public void setParticipants(List<User> participants) {
-        this.participants = participants;
-    }
 }

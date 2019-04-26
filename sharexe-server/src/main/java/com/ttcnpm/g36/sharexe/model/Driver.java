@@ -38,7 +38,7 @@ public class Driver implements Serializable {
 
     void addNewRequest(TripRequest request) {
         this.receivedRequests.add(request);
-        request.setReceiver(this);
+        request.setReceiver(userInfo);
     }
 
     void removeRequest(TripRequest request) {

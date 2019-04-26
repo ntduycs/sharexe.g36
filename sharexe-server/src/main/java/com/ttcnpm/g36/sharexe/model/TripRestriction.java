@@ -13,12 +13,22 @@ import java.io.Serializable;
 @Table(name = "trip_restriction")
 public class TripRestriction implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip tripInfo;
 
     @NotNull
     private String name;
+
+    public TripRestriction() {
+    }
+
+    public TripRestriction(@NotNull String name) {
+        this.name = name;
+    }
 
     public void setTripInfo(Trip tripInfo) {
         this.tripInfo = tripInfo;

@@ -14,16 +14,17 @@ import java.io.Serializable;
 @Table(name = "trip_request")
 public class TripRequest extends TimeSetting implements Serializable {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "receiver_id", nullable = false)
-    private Driver receiver;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private User receiver;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
@@ -32,7 +33,7 @@ public class TripRequest extends TimeSetting implements Serializable {
     @NotNull
     private TripRequestStatus status;
 
-    public void setReceiver(Driver receiver) {
+    public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
 

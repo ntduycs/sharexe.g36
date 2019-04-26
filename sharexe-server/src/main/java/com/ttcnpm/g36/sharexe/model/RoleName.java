@@ -1,6 +1,6 @@
 package com.ttcnpm.g36.sharexe.model;
 
-public enum UserRole {
+public enum RoleName {
     NEW_USER,
     DRIVER,
     PASSENGER
