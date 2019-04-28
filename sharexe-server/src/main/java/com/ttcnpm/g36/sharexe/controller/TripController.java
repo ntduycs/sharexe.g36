@@ -2,6 +2,7 @@ package com.ttcnpm.g36.sharexe.controller;
 
 import com.ttcnpm.g36.sharexe.exception.ResourceNotFoundException;
 import com.ttcnpm.g36.sharexe.model.Trip;
+import com.ttcnpm.g36.sharexe.model.User;
 import com.ttcnpm.g36.sharexe.payload.*;
 import com.ttcnpm.g36.sharexe.repository.TripRepository;
 import com.ttcnpm.g36.sharexe.repository.TripRequestRepository;
@@ -9,6 +10,7 @@ import com.ttcnpm.g36.sharexe.security.CurrentUser;
 import com.ttcnpm.g36.sharexe.security.UserPrincipal;
 import com.ttcnpm.g36.sharexe.service.TripService;
 import com.ttcnpm.g36.sharexe.utils.AppConstants;
+import com.ttcnpm.g36.sharexe.utils.ConvertFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +23,10 @@ import java.net.URI;
 @RequestMapping("/api/trips")
 public class TripController {
     private final TripRepository tripRepository;
-    private final TripRequestRepository requestRepository;
     private final TripService tripService;
 
-    public TripController(TripRepository tripRepository, TripRequestRepository requestRepository, TripService tripService) {
+    public TripController(TripRepository tripRepository, TripService tripService) {
         this.tripRepository = tripRepository;
-        this.requestRepository = requestRepository;
         this.tripService = tripService;
     }
 
@@ -42,6 +42,35 @@ public class TripController {
 
         return ResponseEntity.created(location)
                 .body(new APIResponse(true, "Creating new trip successfully."));
+    }
+
+    @Transactional
+    @PutMapping("/trip-status/{tripId}")
+    public ResponseEntity<?> updateTripStatus(@PathVariable Long tripId,
+                                        @Valid @RequestBody TripStatusRequest request,
+                                              @CurrentUser UserPrincipal currentUser) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(()-> new ResourceNotFoundException("Trip", "tripId", tripId));
+
+        if (!currentUser.getId().equals(trip.getCreatedBy())) {
+            ResponseEntity.badRequest().body("You are not the owner of this trip");
+        }
+
+        trip.setStatus(ConvertFactory.getTripStatusFromRequest(request.getContent()));
+        tripRepository.save(trip);
+
+        return ResponseEntity.ok()
+                .body(new APIResponse(true, "Confirm finishing the trip successfully."));
+    }
+
+    @Transactional
+    @PutMapping("/modify/{tripId}")
+    public ResponseEntity<?> updateTripInfo(@PathVariable Long tripId,
+                                            @Valid @RequestBody TripEditingRequest request) {
+        tripService.updateExistingTrip(tripId, request);
+
+        return ResponseEntity.ok()
+                .body(new APIResponse(true, "Update trip info successfully."));
     }
 
     @PostMapping("/join/{tripId}")
@@ -80,4 +109,6 @@ public class TripController {
                                                               @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return tripService.getAllJoinedTrips(currentUser, page, size);
     }
+
+
 }

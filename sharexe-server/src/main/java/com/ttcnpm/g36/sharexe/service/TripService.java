@@ -1,11 +1,9 @@
 package com.ttcnpm.g36.sharexe.service;
 
 import com.ttcnpm.g36.sharexe.exception.BadRequestException;
+import com.ttcnpm.g36.sharexe.exception.ResourceNotFoundException;
 import com.ttcnpm.g36.sharexe.model.*;
-import com.ttcnpm.g36.sharexe.payload.MultiItemsResponse;
-import com.ttcnpm.g36.sharexe.payload.TripCreatingRequest;
-import com.ttcnpm.g36.sharexe.payload.TripReplyingRequest;
-import com.ttcnpm.g36.sharexe.payload.TripResponse;
+import com.ttcnpm.g36.sharexe.payload.*;
 import com.ttcnpm.g36.sharexe.repository.TripRepository;
 import com.ttcnpm.g36.sharexe.repository.TripRequestRepository;
 import com.ttcnpm.g36.sharexe.repository.UserRepository;
@@ -119,5 +117,21 @@ public class TripService {
 
         return new MultiItemsResponse<>(responses, pagedTrip.getNumber(),
                 pagedTrip.getSize(), pagedTrip.getTotalElements(), pagedTrip.getTotalPages(), pagedTrip.isLast());
+    }
+
+    public void updateExistingTrip(Long tripId, TripEditingRequest request) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(()-> new ResourceNotFoundException("Trip", "tripId", tripId));
+
+        trip.setDescription(request.getDescription());
+        trip.setBeginAt(request.getBeginAt());
+        trip.setEndAt(request.getEndAt());
+        trip.setPricePerPerson(request.getPrice());
+
+        trip.getRestrictions().clear();
+
+        request.getRestrictions().forEach(restriction -> trip.addRestriction(new TripRestriction(restriction.getText())));
+
+        tripRepository.save(trip);
     }
 }

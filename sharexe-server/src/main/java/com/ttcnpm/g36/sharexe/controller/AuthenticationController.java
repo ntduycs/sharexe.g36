@@ -8,7 +8,7 @@ import com.ttcnpm.g36.sharexe.payload.*;
 import com.ttcnpm.g36.sharexe.repository.RoleRepository;
 import com.ttcnpm.g36.sharexe.repository.UserRepository;
 import com.ttcnpm.g36.sharexe.utils.JwtTokenProvider;
-import com.ttcnpm.g36.sharexe.utils.UserGenderConverter;
+import com.ttcnpm.g36.sharexe.utils.ConvertFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -88,7 +88,7 @@ public class AuthenticationController {
 
         // Ok, create a new account
         User user = new User(request.getFullName(), request.getEmail(), request.getUsername(),
-                request.getPassword(), request.getDateOfBirth(), UserGenderConverter.normalize(request.getSex()));
+                request.getPassword(), request.getDateOfBirth(), ConvertFactory.normalizeGender(request.getSex()));
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setProfileImage(Integer.toString(new Random().nextInt(6) + 1));

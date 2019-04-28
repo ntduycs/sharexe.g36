@@ -14,19 +14,19 @@ import java.io.Serializable;
 @Table(name = "user_rates_user")
 public class Feedback extends TimeSetting implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
 
-    @NotNull
     private String message;
 
-    @NotNull
     private Float point;
 
     public void setSender(User sender) {
