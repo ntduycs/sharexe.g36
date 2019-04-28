@@ -4,6 +4,6 @@ import com.ttcnpm.g36.sharexe.model.UserGender;
 
 public class UserGenderConverter {
     public static UserGender normalize(String input) {
-        return input.equals("Male") || input.equals("M") ? UserGender.MALE : UserGender.FEMALE;
+        return input.toLowerCase().equals("male") || input.toLowerCase().equals("m") ? UserGender.MALE : UserGender.FEMALE;
     }
 }

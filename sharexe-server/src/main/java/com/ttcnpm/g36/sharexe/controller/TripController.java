@@ -2,14 +2,13 @@ package com.ttcnpm.g36.sharexe.controller;
 
 import com.ttcnpm.g36.sharexe.exception.ResourceNotFoundException;
 import com.ttcnpm.g36.sharexe.model.Trip;
-import com.ttcnpm.g36.sharexe.payload.APIResponse;
-import com.ttcnpm.g36.sharexe.payload.TripCreatingRequest;
-import com.ttcnpm.g36.sharexe.payload.TripReplyingRequest;
+import com.ttcnpm.g36.sharexe.payload.*;
 import com.ttcnpm.g36.sharexe.repository.TripRepository;
 import com.ttcnpm.g36.sharexe.repository.TripRequestRepository;
 import com.ttcnpm.g36.sharexe.security.CurrentUser;
 import com.ttcnpm.g36.sharexe.security.UserPrincipal;
 import com.ttcnpm.g36.sharexe.service.TripService;
+import com.ttcnpm.g36.sharexe.utils.AppConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +47,7 @@ public class TripController {
     @PostMapping("/join/{tripId}")
     public ResponseEntity<?> sendJoiningRequest(@PathVariable Long tripId, @CurrentUser UserPrincipal currentUser) {
         Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(()-> new ResourceNotFoundException("Trip", "tripId", tripId));
+                .orElseThrow(() -> new ResourceNotFoundException("Trip", "tripId", tripId));
 
         Long tripOwnerId = trip.getCreatedBy();
 
@@ -65,5 +64,20 @@ public class TripController {
         tripService.replyJoiningRequest(requestId, currentUser, responseFromTripOwner);
 
         return ResponseEntity.ok(new APIResponse(true, "Response has been sent to guest."));
+    }
+
+    @Transactional
+    @GetMapping("/all")
+    public MultiItemsResponse<TripResponse> getAllTrips(@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                        @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+        return tripService.getAllWaitingTrips(page, size);
+    }
+
+    @Transactional
+    @GetMapping("/my-trips")
+    public MultiItemsResponse<TripResponse> getAllJoinedTrips(@CurrentUser UserPrincipal currentUser,
+                                                              @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                              @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+        return tripService.getAllJoinedTrips(currentUser, page, size);
     }
 }

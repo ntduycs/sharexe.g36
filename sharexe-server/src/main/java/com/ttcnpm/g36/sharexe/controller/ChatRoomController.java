@@ -38,7 +38,8 @@ public class ChatRoomController {
 
     /** Create messages */
     @PostMapping("/{roomId}/messages")
-    public Message createMessage(HttpServletRequest request, @Valid @RequestBody MessageRequest messageRequest, @PathVariable long roomId) {
+    public Message createMessage(HttpServletRequest request, @Valid @RequestBody MessageRequest messageRequest,
+                                 @PathVariable long roomId) {
         long userId = (long) request.getAttribute("userId");
         return chatRoomService.addMessage(userId, roomId, messageRequest.getMessageContent());
     }
