@@ -97,6 +97,7 @@ class Header extends Component {
                                         </ul>
                                     </div>
                             
+                                    <Link to="/information">
                                     <div className="author-author__info inline has_dropdown">
                                         <div className="author__avatar">
                                             <img src="images/usr_avatar.png" alt="user avatar" />
@@ -122,7 +123,7 @@ class Header extends Component {
                                             </ul>
                                         </div>
                                     </div>
-                            
+                            </Link>
                                 </div>
                         
                                 <div className="mobile_content ">

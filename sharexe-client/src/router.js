@@ -8,6 +8,10 @@ import NotFoundPage from './containers/NotFoundPage/NotFoundPage';
 import LoginPage from './containers/LoginPage/LoginPage';
 import MessagePage from './containers/MessagePage/MessagePage';
 import CarPage from './containers/CarPage/CarPage';
+import InformationPage from './containers/InfomationPage/InfomationPage';
+import CarEditPage from './containers/CarEditPage/CarEditPage';
+import CarListPage from './containers/CarListPage/CarListPage';
+import AcceptPage from './containers/AccpetPage/AcceptPage';
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => 
     <Route {...rest} render={props => isAuthenticated ? <Component {...rest} /> : <Redirect to='/login' />} />; 
@@ -21,7 +25,10 @@ export default function router({ isAuthenticated }) {
                     <Switch>
                         <PrivateRoute path='/' exact component={HomePage} isAuthenticated={isAuthenticated} />
                         <PrivateRoute path='/messages' component={MessagePage} isAuthenticated={isAuthenticated} />
-                        <PrivateRoute path='/car' component={CarPage} isAuthenticated={isAuthenticated}/>
+                        <PrivateRoute path='/car' component={CarPage} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute path='/information' component={InformationPage} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute path='/car-list' component={CarListPage} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute path='/car-edit' component={CarEditPage} isAuthenticated={isAuthenticated} />
                         <Route component={NotFoundPage} />
                     </Switch>
                 </MainLayout>

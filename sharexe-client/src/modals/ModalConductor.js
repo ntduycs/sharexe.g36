@@ -10,7 +10,6 @@ const ModalConductor = props => {
     switch (props.currentModal) {
         case modalTypes.LOGIN_MODAL:
             return <LoginModal onClose={props.onClose} isOpen={props.currentModal !== undefined} />
-
         default:
             return null;
     }

@@ -10,13 +10,13 @@ import './MainLayout.css';
 
 const MainLayout = (props) => (
     <div>
-        <Header />
+        <Header /> {/* Cục chứa logo, HOME, OFFER... */}
         
-        <DashboardArea />
+        <DashboardArea /> {/** Cục tím tím */}
 
         {props.children}
 
-        <Footer />
+        <Footer /> {/** Cục màu đen */}
 
         <ModalConductor />
         

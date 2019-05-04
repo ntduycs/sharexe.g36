@@ -17,6 +17,6 @@ export default function authReducer(state = initialState, action) {
             return { ...state, isAuthenticated: false, user: undefined };
         
         default:
-            return initialState;
+            return state;
     }
 }
