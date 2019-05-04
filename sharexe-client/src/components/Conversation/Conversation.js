@@ -81,10 +81,6 @@ class Conversation extends PureComponent {
         
         this.props.hoistContact(roomId, submitText);
 
-<<<<<<< HEAD
-=======
-        console.log('heere');
->>>>>>> af69a4cfcf778e81ae731384c07fc1c5c3b4a2b6
         this.setState((prevState) => ({
             html: "",
             messages: [...prevState.messages,

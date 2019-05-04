@@ -26,6 +26,6 @@ export const getDateTimeToNow = (datetime) => {
     } else if (timeDiff < 7 * DAY) {
         return `${parseInt(timeDiff / DAY)} days ago`;
     } else {
-        return new Date(datetime);
+        return new Date(datetime).toUTCString();
     }
 }
