@@ -9,6 +9,7 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.4.2",
     "react": "^16.8.3",
+    "react-awesome-modal": "^2.0.5",
     "react-contenteditable": "^3.2.6",
     "react-dom": "^16.8.3",
     "react-modal": "^3.8.1",

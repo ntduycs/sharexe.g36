@@ -2,25 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import * as authActions from '../../actions/auth.action';
-
 import './LoginPage.css';
 
+import LoginCarousel from './LoginCarousel';
+import LoginForm from './LoginForm';
+
 class LoginPage extends Component {
-    state = {
-        username: '',
-        password: ''
-    }
-
-    onFieldChanged = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    onFormSubmit = (e) => {
-        e.preventDefault();
-
-        this.props.loginUser(this.state.username, this.state.password);
-    }
 
     render() {
         if (this.props.isAuthenticated) {
@@ -28,26 +15,19 @@ class LoginPage extends Component {
         }
 
         return (
-            <form onSubmit={this.onFormSubmit}>
+            <section className="login-block">
+                <div className="login-container container">
+                    <div className="row">
+                        <LoginForm />
+                        <LoginCarousel />
+                    </div>
+                </div>
+            </section>
 
-                Username
-                <input name="username" value={this.state.username} onChange={this.onFieldChanged} />
-                <br />
-                Password
-                <input name="password" value={this.state.password} onChange={this.onFieldChanged} />
-                <br />
-                <button type="submit">Login</button>
-
-                
-            </form>
         );
     }
 }
 
 const mapStateToProps = ({ auth: { isAuthenticated } }) => ({ isAuthenticated });
 
-const mapDispatchToProps = dispatch => ({
-    loginUser: (username, password) => dispatch(authActions.logInUser(username, password))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps)(LoginPage);

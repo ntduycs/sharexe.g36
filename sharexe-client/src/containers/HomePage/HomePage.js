@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-
-import * as uiActions from '../../actions/ui.action';
-import * as authActions from '../../actions/auth.action';
-import * as modalTypes from '../../constants/modalTypes';
 
 import './HomePage.css';
 
+import HomeBackground from './HomeBackground';
+import HomeMission from './HomeMission';
+import HomeTimeLine from './HomeTimeLine';
+import HomeCounter from './HomeCounter';
+import HomeBestUser from './HomeBestUser';
+import HomeGallery from './HomeGallery';
+import HomeBeforeFooter from './HomeBeforeFooter';
 class HomePage extends Component {
 
-    render() {
-        return (
-            <div>
-                Homepage
-
-                <Link to="/messages?username=nht">here</Link>
-                <button onClick={this.props.openLoginModal}>Click me</button>
-                <button onClick={() => this.props.logout(this.props.user.id)}>Log out</button>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        {/* <button onClick={this.props.openLoginModal}>Click me</button> */}
+        <HomeBackground/>
+        <HomeMission/>
+        <HomeTimeLine/>
+        <HomeCounter/>
+        <HomeBestUser/>
+        <HomeGallery/>
+        <HomeBeforeFooter/>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = ({ auth: { user } }) => ({ user });
 
-const mapDispatchToProps = dispatch => ({
-    openLoginModal: () => dispatch(uiActions.openModal(modalTypes.LOGIN_MODAL)),
-    logout: (userId) => dispatch(authActions.logOutUser(userId))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps)(HomePage);

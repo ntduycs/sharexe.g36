@@ -1,5 +1,6 @@
 $(document).ready(function () {
     if (window.File && window.FileList && window.FileReader) {
+        console.log($("#files"));
         $("#files").on("change", function (e) {
             var files = e.target.files,
                 filesLength = files.length;
@@ -23,6 +24,6 @@ $(document).ready(function () {
             }
         });
     } else {
-        alert("Your browser doesn't support to File API")
+        alert("Your browser doesn't support to File API");
     }
 });

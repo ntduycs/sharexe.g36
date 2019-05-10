@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import './Header.css';
 import SmallCardifyMessage from '../SmallCardifyMessage/SmallCardifyMessage';
+
+import * as authActions from '../../actions/auth.action';
+
+import '../../style.css';
+import './Header.css';
+import NotificationDropbox from './NotificationDropbox';
 
 class Header extends Component {
     constructor(props) {
@@ -24,58 +29,15 @@ class Header extends Component {
                                     </Link>
                                 </div>
                             </div>
-                    
+
                             <div className="col-lg-8 offset-lg-1 col-md-9 col-6 v_middle">
-                        
+
                                 <div className="author-area">
 
                                     <div className="author__notification_area">
                                         <ul>
                                             <li className="has_dropdown">
-                                                <div className="icon_wrap">
-                                                    <span className="lnr lnr-alarm"></span>
-                                                </div>
-
-                                                <div className="dropdowns notification--dropdown">
-
-                                                    <div className="dropdown_module_header">
-                                                        <h4>My Notifications</h4>
-                                                    </div>
-
-                                                    <div className="notifications_module">
-                                                        <div className="notification">
-                                                            <div className="notification__info">
-                                                                <div className="info_avatar">
-                                                                    <img src="images/notification_head5.png" alt="" />
-                                                                </div>
-                                                                <div className="info">
-                                                                    <div>
-                                                                        <p><span>Khamoka Smith</span> has just allowed you to join his ride</p>
-                                                                        <p><a href="#">Ride detail</a></p>
-                                                                    </div>
-                                                                    <p className="time">Just now</p>
-                                                                </div>
-                                                            </div>
-                                                    
-                                                        </div>
-
-                                                        <div className="notification">
-                                                            <div className="notification__info">
-                                                                <div className="info_avatar">
-                                                                    <img src="images/notification_head6.png" alt="" />
-                                                                </div>
-                                                                <div className="info">
-                                                                    <div>
-                                                                        <p className="thanglozviettemplatengunhucho"><span>John</span> wants to join your ride</p>
-                                                                        <p><a href="#">Ride detail</a></p>
-                                                                    </div>
-                                                                    <p className="time">1 minute ago</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                
-                                                    </div>
-                                                </div>
+                                                <NotificationDropbox />
                                             </li>
 
                                             <li className="has_dropdown" onMouseEnter={() => this.smallCardifyMessage.current.fetchMessages()}>
@@ -89,43 +51,47 @@ class Header extends Component {
                                                         <Link to="/messages">View All</Link>
                                                     </div>
 
-                                                    <SmallCardifyMessage ref={this.smallCardifyMessage} user={this.props.user}/>
+                                                    <SmallCardifyMessage ref={this.smallCardifyMessage} user={this.props.user} />
 
                                                 </div>
                                             </li>
 
                                         </ul>
                                     </div>
-                            
+
                                     <Link to="/information">
-                                    <div className="author-author__info inline has_dropdown">
-                                        <div className="author__avatar">
-                                            <img src="images/usr_avatar.png" alt="user avatar" />
-                                        </div>
-                                        <div className="autor__info">
-                                            <p className="name">
-                                                {this.props.user && this.props.user.id} + {this.props.user && this.props.user.username}
-                                    </p>
-                                            <p className="ammount">$20.45</p>
-                                        </div>
+                                        <div className="author-author__info inline has_dropdown">
+                                            <div className="author__avatar">
+                                                <img src="images/usr_avatar.png" alt="user avatar" />
+                                            </div>
+                                            <div className="autor__info">
+                                                <p className="name">
+                                                    {this.props.user && this.props.user.id} + {this.props.user && this.props.user.username}
+                                                </p>
+                                                <p className="ammount">$20.45</p>
+                                            </div>
 
-                                        <div className="dropdowns dropdown--author">
-                                            <ul>
-                                                <li>
-                                                    <a href="author.html">
-                                                        <span className="lnr lnr-user"></span>Profile</a>
-                                                </li>
-                                                <li>
-                                                    <a href="dashboard.html">
-                                                        <span className="lnr lnr-home"></span> Dashboard</a>
-                                                </li>
+                                            <div className="dropdowns dropdown--author">
+                                                <ul>
+                                                    <li>
+                                                        <a href="author.html">
+                                                            <span className="lnr lnr-user"></span>Profile</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="dashboard.html">
+                                                            <span className="lnr lnr-home"></span> Dashboard</a>
+                                                    </li>
+                                                    <li>
+                                                        <a onClick={() => this.props.logout(this.props.user.id)}>
+                                                            <span className="lnr lnr-home"></span> Logout</a>
+                                                    </li>
 
-                                            </ul>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                            </Link>
+                                    </Link>
                                 </div>
-                        
+
                                 <div className="mobile_content ">
                                     <span className="lnr lnr-user menu_icon"></span>
                                     <div className="offcanvas-menu closed">
@@ -172,7 +138,7 @@ class Header extends Component {
                                                 </li>
                                             </ul>
                                         </div>
-                                
+
 
                                         <div className="dropdowns dropdown--author">
                                             <ul>
@@ -227,21 +193,21 @@ class Header extends Component {
                                         </div>
                                     </div>
                                 </div>
-                        
+
                             </div>
-                    
+
                         </div>
-                
+
                     </div>
-            
+
                 </div>
-        
+
                 <div className="mainmenu">
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="navbar-header">
-                            
+
                                     <div className="mainmenu__search">
                                         <form action="#">
                                             <div className="searc-wrap">
@@ -252,7 +218,7 @@ class Header extends Component {
                                             </div>
                                         </form>
                                     </div>
-                            
+
                                 </div>
 
                                 <nav className="navbar navbar-expand-md navbar-light mainmenu__menu">
@@ -260,7 +226,7 @@ class Header extends Component {
                                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                         <span className="navbar-toggler-icon"></span>
                                     </button>
-                            
+
                                     <div className="collapse navbar-collapse" id="navbarNav">
                                         <ul className="navbar-nav">
                                             <li className="has_dropdown">
@@ -302,122 +268,31 @@ class Header extends Component {
                                                     </ul>
                                                 </div>
                                             </li>
-                                            <li className="has_megamenu">
-                                                <a href="#">profile</a>
-                                                <div className="dropdown_megamenu contained">
-                                                    <div className="megamnu_module">
-                                                        <div className="menu_items">
-                                                            <div className="menu_column">
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="accordion.html">Accordion</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="alert.html">Alert</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
-                                                            <div className="menu_column">
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="features.html">Features</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="footer.html">Footer</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
-                                                            <div className="menu_column">
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="progressbar.html">Progressbar</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="social.html">Social</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <li className="has_dropdown">
+                                                <a href="all-products-list.html">offer</a>
+                                                <div className="dropdowns dropdown--menu">
+                                                    <ul>
+                                                        <li>
+                                                            <a href="all-products.html">Recent Items</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="all-products.html">Popular Items</a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </li>
-                                            <li className="has_megamenu">
-                                                <a href="#">about us</a>
-                                                <div className="dropdown_megamenu">
-                                                    <div className="megamnu_module">
-                                                        <div className="menu_items">
-                                                            <div className="menu_column">
-                                                                <ul>
-                                                                    <li className="title">Product</li>
-                                                                    <li>
-                                                                        <a href="all-products.html">Products Grid</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="all-products-list.html">Products List</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
-                                                            <div className="menu_column">
-                                                                <ul>
-                                                                    <li className="title">Author</li>
-                                                                    <li>
-                                                                        <a href="author.html">Author Profile</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="author-items.html">Author Items</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
-                                                            <div className="menu_column">
-                                                                <ul>
-                                                                    <li className="title">Dashboard</li>
-                                                                    <li>
-                                                                        <a href="dashboard.html">Dashboard</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="dashboard-setting.html">Account Settings</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
-                                                            <div className="menu_column">
-                                                                <ul>
-                                                                    <li className="title">Customers</li>
-                                                                    <li>
-                                                                        <a href="support-forum.html">Support Forum</a>
-                                                                    </li>
-                                                                </ul>
-
-                                                                <ul>
-                                                                    <li className="title">Blog</li>
-                                                                    <li>
-                                                                        <a href="blog1.html">Blog V-1</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
-                                                            <div className="menu_column">
-                                                                <ul>
-                                                                    <li className="title">Other</li>
-                                                                    <li>
-                                                                        <a href="how-it-works.html">How It Works</a>
-                                                                    </li>
-                                                                    <li className="has_badge">
-                                                                        <a href="badges.html">Badges</a>
-                                                                        <span className="badge">New</span>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <li className="has_dropdown">
+                                                <a href="all-products-list.html">about us</a>
+                                                <div className="dropdowns dropdown--menu">
+                                                    <ul>
+                                                        <li>
+                                                            <a href="all-products.html">Recent Items</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="all-products.html">Popular Items</a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
-                                            </li>
-                                            <li>
-                                                <a href="contact.html">contact</a>
                                             </li>
                                             <li>
                                                 <a href="contact.html">faq</a>
@@ -436,4 +311,8 @@ class Header extends Component {
 
 const mapStateToProps = ({ auth: { user } }) => ({ user });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = dispatch => ({
+    logout: (userId) => dispatch(authActions.logOutUser(userId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
