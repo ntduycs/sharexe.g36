@@ -8,7 +8,7 @@ export default class HomeGallery extends Component {
       <section className="gallery_area">
         <div className="gallery_contents_wrapper bgimage">
           <div className="bg_image_holder gallery-img">
-            <img src="images/galbg.jpg" alt />
+            <img src="images/galbg.jpg" alt="" />
           </div>
           <div className="container content_above">
             <div className="row">

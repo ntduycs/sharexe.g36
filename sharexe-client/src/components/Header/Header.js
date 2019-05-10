@@ -11,6 +11,8 @@ import HeaderMobile from './HeaderMobile';
 import MessageDropbox from './MessageDropbox';
 import UserDropbox from './UserDropbox';
 
+import * as authActions from '../../actions/auth.action';
+
 class Header extends Component {
 
     render() {
@@ -62,4 +64,8 @@ class Header extends Component {
 
 const mapStateToProps = ({ auth: { user } }) => ({ user });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = dispatch => ({
+    logout: (userId) => dispatch(authActions.logOutUser(userId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
