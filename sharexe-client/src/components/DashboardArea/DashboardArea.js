@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const DashBoardArea = (props) => (
         <section className="dashboard-area">
@@ -8,24 +9,19 @@ const DashBoardArea = (props) => (
                     <div className="col-md-12">
                         <ul className="dashboard_menu">
                             <li>
-                                <a href="dashboard.html">
-                                    <span className="lnr lnr-home"></span>Dashboard</a>
+                                <Link to="/"><span className="lnr lnr-home"></span>Dashboard</Link>
                             </li>
                             <li>
-                                <a href="dashboard-setting.html">
-                                    <span className="lnr lnr-bus"></span>Vehicles</a>
+                                <Link to="/car-list"><span className="lnr lnr-bus"></span>Vehicles</Link>        
                             </li>
                             <li className="active">
-                                <a href="dashboard-purchase.html">
-                                    <span className="lnr lnr-history"></span>History</a>
+                                <Link to="/history"><span className="lnr lnr-history"></span>History</Link>                                   
                             </li>
                             <li>
-                                <a href="dashboard-add-credit.html">
-                                    <span className="lnr lnr-license"></span>Add Credits</a>
+                                <Link to="/"><span className="lnr lnr-license"></span>Add Credits</Link>                                
                             </li>
                             <li>
-                                <a href="dashboard-add-credit.html">
-                                    <span className="lnr lnr-gift"></span>Promotion</a>
+                                <Link to="/"><span className="lnr lnr-gift"></span>Promotion</Link>                               
                             </li>
 
                         </ul>

@@ -5,8 +5,6 @@ import Router from './router';
 
 import * as authActions from './actions/auth.action';
 
-import './App.css';
-
 class App extends Component {
     state = {
         isLoading: true

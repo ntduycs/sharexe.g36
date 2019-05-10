@@ -12,7 +12,7 @@ const MainLayout = (props) => (
     <div>
         <Header /> {/* Cục chứa logo, HOME, OFFER... */}
         
-        <DashboardArea /> {/** Cục tím tím */}
+        {/* <DashboardArea /> * Cục tím tím */}
 
         {props.children}
 
