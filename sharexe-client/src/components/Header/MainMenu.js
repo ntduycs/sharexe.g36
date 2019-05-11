@@ -54,7 +54,7 @@ export default class MainMenu extends Component {
                             <Link to="/history">History</Link>
                           </li>
                           <li>
-                            <Link to="/vehicle-list">Vehicle</Link>
+                            <Link to="/car-list">Vehicle</Link>
                           </li>
                         </ul>
                       </div>

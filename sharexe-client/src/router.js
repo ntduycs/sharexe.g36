@@ -7,11 +7,10 @@ import HomePage from './containers/HomePage/HomePage';
 import NotFoundPage from './containers/NotFoundPage/NotFoundPage';
 import LoginPage from './containers/LoginPage/LoginPage';
 import MessagePage from './containers/MessagePage/MessagePage';
-import CarPage from './containers/CarPage/CarPage';
+import CarPage from './containers/CarListPage/CarPage';
 import InformationPage from './containers/InfomationPage/InfomationPage';
 import CarEditPage from './containers/CarEditPage/CarEditPage';
 import CarListPage from './containers/CarListPage/CarListPage';
-import AcceptPage from './containers/AccpetPage/AcceptPage';
 import HistoryPage from './containers/HistoryPage/HistoryPage';
 import HistoryDetail from './containers/HistoryPage/HistoryDetail';
 
