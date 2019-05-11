@@ -74,10 +74,10 @@
 }
 
 .btn-login {
-  background: #7347c1;
+  background: #7347c1 !important;
   color: #fff;
   font-weight: 600;
-  padding: 20px;
+  padding: 10px 20px !important;
 }
 
 .login-input {
