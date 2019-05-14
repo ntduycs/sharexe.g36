@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 
 import SmallCardifyMessage from '../SmallCardifyMessage/SmallCardifyMessage';
 
-import '../../style.css';
+
 
 class MessageDropbox extends Component {
   constructor(props) {
