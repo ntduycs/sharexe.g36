@@ -35,6 +35,7 @@ public class VehicleController {
     @PostMapping
     // TODO: only driver can add new own vehicle
     public ResponseEntity<?> addNewVehicle(@Valid @RequestBody VehicleRequest request, @CurrentUser UserPrincipal currentUser) {
+
         Vehicle newVehicle = vehicleService.addNewVehicle(request, currentUser);
 
         URI location = ServletUriComponentsBuilder
@@ -42,7 +43,7 @@ public class VehicleController {
                 .buildAndExpand(newVehicle.getId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new APIResponse(true, "New vehicle has beed registered to our system"));
+                .body(new APIResponse(true, "New vehicle has been registered to our system"));
     }
 
     @PutMapping("/{vehicleId}")

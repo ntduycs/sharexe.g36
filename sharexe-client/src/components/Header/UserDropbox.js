@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import * as authActions from '../../actions/auth.action';
 
 
-import '../../style.css';
+
 import './Header.css';
 
 class UserDropbox extends Component {

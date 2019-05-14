@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class ModelMapper {
     public static VehicleResponse mapToVehicleResponse(Vehicle vehicle) {
         VehicleResponse response = new VehicleResponse();
-
+        response.setId(vehicle.getId());
         response.setBrand(vehicle.getBrand());
         response.setModel(vehicle.getModel());
         response.setCapacity(vehicle.getCapacity());

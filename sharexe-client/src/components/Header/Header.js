@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import '../../style.css';
+
 import './Header.css';
 
 import NotificationDropbox from './NotificationDropbox';

@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class VehicleResponse {
+    private Long id;
     private String brand;
     private String model;
     private String licensePlate;
