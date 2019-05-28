@@ -3,7 +3,6 @@ import Modal from 'react-awesome-modal';
 
 import './CarListPage.css';
 
-import {notification} from 'antd';
 import {deleteVehicle} from "../../utils/api.connector";
 
 class CarDeleteModal extends Component {
@@ -11,20 +10,20 @@ class CarDeleteModal extends Component {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
-
     }
 
     handleSubmit(event) {
+        console.log(event);
         event.preventDefault();
 
         deleteVehicle(this.props.vehicleId)
             .then(response => {
-                this.props.history.push("/");
+                alert(this.props.vehicleId);
+                // this.props.removeVehicleFromState(this.props.vehicleId);
+                this.props.loadVehicleList(0);
+                this.props.trigglerDelete();
             }).catch(error => {
-            notification.error({
-                message: "ShareXe webapp",
-                description: error.message || "Sorry! Something went wrong. Please try again!"
-            });
+            alert(error);
         })
 
     }
@@ -48,7 +47,7 @@ class CarDeleteModal extends Component {
                                             <h6>Really niggle ????</h6>
                                             {/* end /.information_wrapper */}
                                         </div>
-                                        {/* end /.in4ormation__set */}
+                                        {/* end /.information__set */}
                                     </div>
                                     {/* end /.information_module */}
 
@@ -65,8 +64,6 @@ class CarDeleteModal extends Component {
                     </div>
                     {/* end /.container */}
                 </div>
-
-
 
             </Modal>
 

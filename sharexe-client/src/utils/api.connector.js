@@ -4,10 +4,11 @@ import { API_URL, ACCESS_TOKEN, VEHICLE_LIST_SIZE } from '../constants/common';
 const request = (options) => {
     const headers = new Headers({
         'Content-Type': 'application/json',
-    })
+    });
 
     if(localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+        headers.append('Authorization',
+            'Bearer ' + localStorage.getItem(ACCESS_TOKEN));
     }
 
     const defaults = {headers: headers};
@@ -16,10 +17,7 @@ const request = (options) => {
     return fetch(options.url, options)
         .then(response =>
             response.json().then(json => {
-                if(!response.ok) {
-                    return Promise.reject(json);
-                }
-                return json;
+                return !response.ok ? Promise.reject(json) : json;
             })
         );
 };
