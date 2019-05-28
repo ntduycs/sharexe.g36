@@ -13,4 +13,5 @@ public class ImageStorageConfig {
     public void setUploadDirectory(String uploadDirectory) {
         this.uploadDirectory = uploadDirectory;
     }
+
 }

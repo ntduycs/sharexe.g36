@@ -1,5 +1,6 @@
 package com.ttcnpm.g36.sharexe.exception;
 
+
 public class ImageNotFoundException extends RuntimeException {
     public ImageNotFoundException(String message) {
         super(message);
@@ -8,4 +9,5 @@ public class ImageNotFoundException extends RuntimeException {
     public ImageNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }
