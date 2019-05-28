@@ -42,13 +42,13 @@ public class VehicleService {
         return vehicleRepository.save(newVehicle);
     }
 
-    public void editExistingVehicle(VehicleRequest request, Long vehicleId, UserPrincipal currentUser) {
+    public Vehicle editExistingVehicle(VehicleRequest request, Long vehicleId, UserPrincipal currentUser) {
         Vehicle existingVehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle", "id", vehicleId));
 
         populate(request, existingVehicle);
 
-        vehicleRepository.save(existingVehicle);
+        return vehicleRepository.save(existingVehicle);
     }
 
     private void populate(VehicleRequest request, Vehicle recevier) {

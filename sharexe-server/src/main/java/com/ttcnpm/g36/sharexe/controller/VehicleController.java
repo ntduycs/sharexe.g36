@@ -50,10 +50,10 @@ public class VehicleController {
     public ResponseEntity<?> editExistingVehicle(@Valid @RequestBody VehicleRequest request,
                                                  @PathVariable Long vehicleId,
                                                  @CurrentUser UserPrincipal currentUser) {
-        vehicleService.editExistingVehicle(request, vehicleId, currentUser);
+        Vehicle editedVehicle = vehicleService.editExistingVehicle(request, vehicleId, currentUser);
 
         return ResponseEntity.ok()
-                .body(new APIResponse(true, "The vehicle has been modified successfully."));
+                .body(new VehicleResponse(editedVehicle.getId()));
     }
 
     @GetMapping
