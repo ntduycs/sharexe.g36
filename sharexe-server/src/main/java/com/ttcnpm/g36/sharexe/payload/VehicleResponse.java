@@ -14,4 +14,11 @@ public class VehicleResponse {
     private String licensePlate;
     private Integer capacity;
     private List<ImageResponse> images;
+
+    public VehicleResponse(Long id) {
+        this.id = id;
+    }
+
+    public VehicleResponse() {
+    }
 }

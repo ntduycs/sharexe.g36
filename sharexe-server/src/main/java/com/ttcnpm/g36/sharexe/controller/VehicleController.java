@@ -43,7 +43,7 @@ public class VehicleController {
                 .buildAndExpand(newVehicle.getId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new APIResponse(true, "New vehicle has been registered to our system"));
+                .body(new VehicleResponse(newVehicle.getId()));
     }
 
     @PutMapping("/{vehicleId}")

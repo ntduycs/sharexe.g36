@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/// localhost:5000/api/users/abc
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

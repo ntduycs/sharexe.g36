@@ -2,10 +2,8 @@ package com.ttcnpm.g36.sharexe.controller;
 
 import com.ttcnpm.g36.sharexe.exception.ResourceNotFoundException;
 import com.ttcnpm.g36.sharexe.model.Trip;
-import com.ttcnpm.g36.sharexe.model.User;
 import com.ttcnpm.g36.sharexe.payload.*;
 import com.ttcnpm.g36.sharexe.repository.TripRepository;
-import com.ttcnpm.g36.sharexe.repository.TripRequestRepository;
 import com.ttcnpm.g36.sharexe.security.CurrentUser;
 import com.ttcnpm.g36.sharexe.security.UserPrincipal;
 import com.ttcnpm.g36.sharexe.service.TripService;

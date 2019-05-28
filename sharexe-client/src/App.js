@@ -10,7 +10,7 @@ import './style.css';
 class App extends Component {
     state = {
         isLoading: true
-    }
+    };
 
     componentDidMount = () => {
         window.onunload = () => {
@@ -18,15 +18,15 @@ class App extends Component {
                 this.props.logout(this.props.user.id, true);
             }
         }
-    }
+    };
 
     componentWillMount = () => {
         this.props.getMe(this.finishLoading);
-    }
+    };
 
     finishLoading = () => {
         this.setState({ isLoading: false });
-    }
+    };
 
     render() {
         return this.state.isLoading ? null : (
