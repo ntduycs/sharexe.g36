@@ -31,7 +31,7 @@ public class ModelMapper {
 
     public static TripResponse mapToTripResponse(Trip trip) {
         TripResponse response = new TripResponse();
-
+        response.setId(trip.getId());
         response.setFrom(trip.getStartingPoint());
         response.setTo(trip.getDestination());
         response.setBegin(trip.getBeginAt());

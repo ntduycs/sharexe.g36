@@ -2,10 +2,13 @@ package com.ttcnpm.g36.sharexe.payload;
 
 import com.ttcnpm.g36.sharexe.model.User;
 import com.ttcnpm.g36.sharexe.model.UserGender;
+import com.ttcnpm.g36.sharexe.utils.ConvertFactory;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+
+import static com.ttcnpm.g36.sharexe.utils.ConvertFactory.getReadableDate;
 
 @Getter
 @Setter
@@ -30,6 +33,8 @@ public class UserResponse {
 
     private String profileImage;
 
+    private String createdAt;
+
     public UserResponse(User user) {
         this.id = user.getId();
         this.fullName = user.getFullName();
@@ -41,5 +46,6 @@ public class UserResponse {
         this.phoneNumber = user.getPhoneNumber();
         this.overallRating = user.getOverallRating();
         this.profileImage = user.getProfileImage();
+        this.createdAt = ConvertFactory.getReadableDate(user.getCreatedAt());
     }
 }

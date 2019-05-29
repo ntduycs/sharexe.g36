@@ -39,7 +39,7 @@ public class TripController {
                 .buildAndExpand(newTrip.getId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new APIResponse(true, "Creating new trip successfully."));
+                .body(new TripResponse(newTrip.getId()));
     }
 
     @Transactional
@@ -106,6 +106,12 @@ public class TripController {
                                                               @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
                                                               @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return tripService.getAllJoinedTrips(currentUser, page, size);
+    }
+
+    @Transactional
+    @GetMapping("/{tripId}")
+    public TripResponse getVehicleById(@CurrentUser UserPrincipal currentUser, @PathVariable Long tripId) {
+        return tripService.getTripById(currentUser, tripId);
     }
 
 

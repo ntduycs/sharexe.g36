@@ -134,4 +134,13 @@ public class TripService {
 
         tripRepository.save(trip);
     }
+
+    public TripResponse getTripById(UserPrincipal currentUser, Long tripId) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new ResourceNotFoundException("Trip", "id", tripId));
+
+        // Return empty object if the vehicle does not belong to currentUser
+
+        return ModelMapper.mapToTripResponse(trip);
+    }
 }

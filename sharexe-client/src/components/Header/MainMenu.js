@@ -41,7 +41,7 @@ export default class MainMenu extends Component {
                       <Link to="/find-trip">Find a ride</Link>
                     </li>
                     <li className="has_dropdown">
-                      <Link to="/offer-trip">Offer a ride</Link>
+                      <Link to="/trip-list">Offer a ride</Link>
                     </li>
                     <li className="has_dropdown">
                       <Link to="/information">Personal</Link>

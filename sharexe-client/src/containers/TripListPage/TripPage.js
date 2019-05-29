@@ -1,22 +1,28 @@
 import React, {Component} from 'react';
-import CarEditModal from "./CarEditModal";
+import TripEditModal from "./TripEditModal";
 
-import {getVehicleById} from '../../utils/api.connector';
-import CarDeleteModal from "./CarDeleteModal";
+import {getTripById} from '../../utils/api.connector';
+import TripDeleteModal from "./TripDeleteModal";
 
-export default class CarPage extends Component {
+export default class TripPage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             visible: false,
             deleteItem: false,
-            vehicleInfo: {
+            tripInfo: {
                 id: this.props.id,
-                brand: this.props.brand,
-                model: this.props.model,
-                licensePlate: this.props.licensePlate,
-                capacity: this.props.capacity
+                from: this.props.from,
+                to: this.props.to,
+                capacity: this.props.capacity,
+                price: this.props.price,
+                beginAt: this.props.beginAt,
+                endAt: this.props.endAt,
+                description: this.props.description,
+                restrictions: this.props.restrictions
+
+
             }
         };
 
@@ -26,27 +32,32 @@ export default class CarPage extends Component {
         this.triggerDelete = this.triggerDelete.bind(this);
         this.triggerDeleteModal = this.triggerDeleteModal.bind(this);
 
-        this.loadVehicleById = this.loadVehicleById.bind(this);
+        this.loadTripById = this.loadTripById.bind(this);
 
         this.updateState = this.updateState.bind(this);
     }
 
     updateState(content) {
         this.setState({
-            vehicleInfo: {...content}
+            tripInfo: {...content}
         })
     }
 
-    loadVehicleById() {
-        getVehicleById(this.props.id)
+    loadTripById() {
+        getTripById(this.props.id)
             .then(response => {
                 this.setState({
-                    vehicleInfo: {
+                    tripInfo: {
                         id: this.props.id,
-                        brand: response.brand,
-                        model: response.model,
-                        licensePlate: response.licensePlate,
-                        capacity: response.capacity
+                        from:  response.from,
+                        to:  response.to,
+                        capacity:  response.capacity,
+                        price:  response.price,
+                        beginAt:  response.beginAt,
+                        endAt:  response.endAt,
+                        description:  response.description,
+                        restrictions:  response.restrictions
+
                     }
                 })
             })
@@ -56,7 +67,7 @@ export default class CarPage extends Component {
     }
 
     componentDidMount() {
-        this.loadVehicleById();
+        this.loadTripById();
     }
 
     openModal() {
@@ -81,15 +92,15 @@ export default class CarPage extends Component {
 
     triggerModal() {
         return this.state.visible ?
-            <CarEditModal triggerModal={this.triggerVisible} vehicleInfo={this.state.vehicleInfo}
+            <TripEditModal triggerModal={this.triggerVisible} tripInfo={this.state.tripInfo}
                           updateState={this.updateState}/> : null;
     }
 
     triggerDeleteModal() {
         return this.state.deleteItem ?
-            <CarDeleteModal trigglerDelete={this.triggerDelete} vehicleId={this.props.id}
-                            updateState={this.updateState}
-                            loadVehicleList={this.props.loadVehicleList}
+            <TripDeleteModal trigglerDelete={this.triggerDelete} tripId={this.props.id}
+                             updateState={this.updateState}
+                             loadTripList={this.props.loadTripList}
                             /> : null;
     }
 
@@ -109,19 +120,19 @@ export default class CarPage extends Component {
                     </div>
                     <div className="product-desc">
                         <a href="#" className="product_title">
-                            <h4>{this.state.vehicleInfo.model}</h4>
+                            <h4>{this.state.tripInfo.id}</h4>
                         </a>
                         <ul className="titlebtm">
                             <li>
                                 <img className="auth-img" src="images/auth.jpg" alt="author"/>
                                 <p>
-                                    <a href="#">{this.state.vehicleInfo.brand}</a>
+                                    <a href="#">{this.state.tripInfo.from}</a>
                                 </p>
                             </li>
                             <li className="product_cat">
                                 <a href="#">
                                     <span
-                                        className="lnr lnr-user"/>Seats: <span>{this.state.vehicleInfo.capacity}</span></a>
+                                        className="lnr lnr-user"/>Seats: <span>{this.state.tripInfo.to}</span></a>
                             </li>
                         </ul>
                     </div>

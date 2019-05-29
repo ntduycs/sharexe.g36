@@ -1,6 +1,24 @@
 import React, { Component } from 'react';
+import {getAllVehicles, getUserInfo} from "../../utils/api.connector";
+import { connect } from 'react-redux';
 
 class InformationPage extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            visible: false,
+
+        };
+
+
+    }
+
+    componentDidMount() {
+        this.loadUserData();
+    }
+
     render() {
         return (
             <section class="author-profile-area">
@@ -15,8 +33,8 @@ class InformationPage extends Component {
                                         </div>
 
                                         <div class="author">
-                                            <h4>Duy Nguyen</h4>
-                                            <p>Signed Up: 30 Third 2019</p>
+                                            <h4>{this.state.fullName}</h4>
+                                            <p>Signed Up: {this.state.createdAt}</p>
                                         </div>
                                 
 
@@ -162,13 +180,13 @@ class InformationPage extends Component {
                                                     <div class="user__short_desc">
                                                 
                                                         <div class="user_info">
-                                                            <p><b>Name</b>: Nguyễn Văn Minh Duy</p>
-                                                            <p><b>Age</b>: 21</p>
-                                                            <p><b>Gender</b>: Nữ</p>
-                                                            <p><b>Mail</b>:duynguyen12@gmail.com</p>
-                                                            <p><b>Phone number</b>:0975214456</p>
-                                                            <p><b>Hobby</b>: chơi bóng chuyền, xem phim, ca nhạc,...</p>
-                                                            <p><b>Point</b>: 1930</p>
+                                                            <p><b>Name</b>: {this.state.fullName}</p>
+                                                            <p><b>BirthDay</b>: {this.state.dateOfBirth}</p>
+                                                            <p><b>Gender</b>: {this.state.sex}</p>
+                                                            <p><b>Mail</b>:{this.state.email}</p>
+                                                            <p><b>Phone number</b>:{this.state.phoneNumber}</p>
+                                                            <p><b>OverallRaring</b>:{this.state.overallRating}</p>
+
                                                         </div>
                                                     </div>
                                             
@@ -293,6 +311,14 @@ class InformationPage extends Component {
 
         );
     }
+
+    loadUserData() {
+        this.setState({
+            ...this.props.user
+        })
+    }
 }
 
-export default InformationPage;
+const mapStateToProps = ({ auth: { user } }) => ({ user });
+
+export default connect(mapStateToProps)(InformationPage) ;

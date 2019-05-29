@@ -8,9 +8,11 @@ import NotFoundPage from './containers/NotFoundPage/NotFoundPage';
 import LoginPage from './containers/LoginPage/LoginPage';
 import MessagePage from './containers/MessagePage/MessagePage';
 import CarPage from './containers/CarListPage/CarPage';
+import TripPage from './containers/TripListPage/TripPage';
 import InformationPage from './containers/InfomationPage/InfomationPage';
 import CarEditPage from './containers/CarEditPage/CarEditPage';
 import CarListPage from './containers/CarListPage/CarListPage';
+import TripListPage from './containers/TripListPage/TripListPage';
 import HistoryPage from './containers/HistoryPage/HistoryPage';
 import HistoryDetail from './containers/HistoryPage/HistoryDetail';
 
@@ -26,10 +28,18 @@ export default function router({ isAuthenticated }) {
           <Switch>
             <PrivateRoute path='/' exact component={HomePage} isAuthenticated={isAuthenticated} />
             <PrivateRoute path='/messages' component={MessagePage} isAuthenticated={isAuthenticated} />
+
             <PrivateRoute path='/car' component={CarPage} isAuthenticated={isAuthenticated} />
+            <PrivateRoute path='/trip' component={TripPage} isAuthenticated={isAuthenticated} />
+
             <PrivateRoute path='/information' component={InformationPage} isAuthenticated={isAuthenticated} />
+
             <PrivateRoute path='/car-list' component={CarListPage} isAuthenticated={isAuthenticated} />
+            <PrivateRoute path='/trip-list' component={TripListPage} isAuthenticated={isAuthenticated} />
+
             <PrivateRoute path='/car-edit' component={CarEditPage} isAuthenticated={isAuthenticated} />
+
+
             <PrivateRoute path="/history" component={HistoryPage} isAuthenticated={isAuthenticated} />
             <PrivateRoute path="/history-detail" component={HistoryDetail} isAuthenticated={isAuthenticated} />
             <Route component={NotFoundPage} />
