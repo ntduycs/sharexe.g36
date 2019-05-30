@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Part;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -142,5 +145,19 @@ public class TripService {
         // Return empty object if the vehicle does not belong to currentUser
 
         return ModelMapper.mapToTripResponse(trip);
+    }
+
+    public List<Participant> getTripsParticipants(Long tripId, Long userID) {
+        List<Participant> participants = new ArrayList<>();
+
+        List<Object[]> partners = tripRepository.getTripsParticipants(tripId, userID);
+        for (Object[] tuple : partners) {
+            Participant p = new Participant();
+            p.setUserID(((BigInteger)tuple[0]).longValue());
+            p.setFullname((String)tuple[1]);
+            p.setUsername((String)tuple[2]);
+            participants.add(p);
+        }
+        return participants;
     }
 }

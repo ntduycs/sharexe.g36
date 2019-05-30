@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import TripEditModal from "./TripEditModal";
+import {connect} from 'react-redux';
+import axios from 'axios';
+import {Link} from 'react-router-dom'
 
 import {getTripById} from '../../utils/api.connector';
 import TripDeleteModal from "./TripDeleteModal";
 
-export default class TripPage extends Component {
+class TripPage extends Component {
     constructor(props) {
         super(props);
 
@@ -21,9 +24,8 @@ export default class TripPage extends Component {
                 endAt: this.props.endAt,
                 description: this.props.description,
                 restrictions: this.props.restrictions
-
-
-            }
+            },
+            participants: []
         };
 
         this.triggerVisible = this.triggerVisible.bind(this);
@@ -68,6 +70,11 @@ export default class TripPage extends Component {
 
     componentDidMount() {
         this.loadTripById();
+
+        axios.get(`/api/trips/participants?tripID=${this.props.id}&userID=${this.props.user.id}`)
+            .then( ({data}) => {
+                this.setState({participants: data});
+        }).catch((err) => alert(err));
     }
 
     openModal() {
@@ -120,7 +127,7 @@ export default class TripPage extends Component {
                     </div>
                     <div className="product-desc">
                         <a href="#" className="product_title">
-                            <h4>{this.state.tripInfo.id}</h4>
+                            <h4>{this.state.tripInfo.id} > {this.state.participants.map(participant => <Link to={`/users?userID=${participant.Username}`}>{participant.Fullname + " "}</Link>)}</h4>
                         </a>
                         <ul className="titlebtm">
                             <li>
@@ -169,3 +176,7 @@ export default class TripPage extends Component {
         )
     }
 }
+
+const mapStateToProps = ({auth:{user}}) => ({user});
+
+export default connect(mapStateToProps)(TripPage);

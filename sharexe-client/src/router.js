@@ -15,6 +15,7 @@ import CarListPage from './containers/CarListPage/CarListPage';
 import TripListPage from './containers/TripListPage/TripListPage';
 import HistoryPage from './containers/HistoryPage/HistoryPage';
 import HistoryDetail from './containers/HistoryPage/HistoryDetail';
+import Information_Participants from "./containers/InfomationPage/Information_Participants";
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) =>
   <Route {...rest} render={props => isAuthenticated ? <Component {...rest} /> : <Redirect to='/login' />} />;
@@ -39,9 +40,10 @@ export default function router({ isAuthenticated }) {
 
             <PrivateRoute path='/car-edit' component={CarEditPage} isAuthenticated={isAuthenticated} />
 
-
             <PrivateRoute path="/history" component={HistoryPage} isAuthenticated={isAuthenticated} />
             <PrivateRoute path="/history-detail" component={HistoryDetail} isAuthenticated={isAuthenticated} />
+            <PrivateRoute path={"/users"} component={Information_Participants} isAuthenticated={isAuthenticated} />
+
             <Route component={NotFoundPage} />
           </Switch>
         </MainLayout>

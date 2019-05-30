@@ -209,7 +209,7 @@ class TripEditModal extends Component {
 
 
     render() {
-        const title = this.props.tripInfo ? "Edit" : "Add";
+        const title = this.props.tripInfo ? "Edit" : "Add Trip";
         return (
             <Modal visible="true" onClickAway={this.props.toggleAddModal}>
 

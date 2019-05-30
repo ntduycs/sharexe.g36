@@ -14,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/trips")
@@ -114,5 +116,10 @@ public class TripController {
         return tripService.getTripById(currentUser, tripId);
     }
 
+    @Transactional
+    @GetMapping("/participants")
+    public List<Participant> getTripsParticipants(@RequestParam(value="tripID") String tripID, @RequestParam(value="userID") String userID) {
+        return tripService.getTripsParticipants(Long.parseLong(tripID), Long.parseLong(userID));
+    }
 
 }
