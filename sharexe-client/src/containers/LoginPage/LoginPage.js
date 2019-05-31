@@ -15,7 +15,7 @@ class LoginPage extends Component {
         }
 
         return (
-            <section className="login-block">
+            <section className="login-block" style={{verticalAlign: 'middle'}}>
                 <div className="login-container container">
                     <div className="row">
                         <LoginForm />
