@@ -4,6 +4,7 @@ import TripPage from './TripPage';
 import TripEditModal from './TripEditModal';
 
 import {getAllTrips} from '../../utils/api.connector';
+import {getAllCreateTrips} from '../../utils/api.connector';
 import {TRIP_LIST_SIZE} from '../../constants/common';
 
 import $ from 'jquery';
@@ -42,7 +43,7 @@ class TripListPage extends Component {
     }
 
     loadTripList(page = 0, size = TRIP_LIST_SIZE) {
-        let promise = getAllTrips(page, size);
+        let promise = getAllCreateTrips(page, size);
 
         if (!promise) {
             return;

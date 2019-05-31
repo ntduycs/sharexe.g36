@@ -66,7 +66,7 @@ public class TripService {
         newRequest.setTrip(trip);
         newRequest.setReceiver(receiver);
         newRequest.setSender(sender);
-        newRequest.setStatus(TripRequestStatus.WAITING_TO_RESPONSE); // by default
+        newRequest.setStatus(TripRequestStatus.ACCEPTED); // by default
 
         requestRepository.save(newRequest);
     }
@@ -92,11 +92,10 @@ public class TripService {
     }
 
     public MultiItemsResponse<TripResponse> getAllWaitingTrips(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "beginAt");
-        Page<Trip> trips = tripRepository.findAllByStatus(TripStatus.WAITING, pageable);
+//        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "beginAt");
+        List<Trip> trips = tripRepository.findAllByStatus(TripStatus.WAITING.name());
 
-//        return getMultiItemsResponse(trips);
-        return null;
+        return getMultiItemsResponse(trips);
     }
 
     public MultiItemsResponse<TripResponse> getAllJoinedTrips(UserPrincipal currentUser, int page, int size) {

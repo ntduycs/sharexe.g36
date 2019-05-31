@@ -104,6 +104,15 @@ export function getAllTrips(page, size) {
     });
 }
 
+export function getAllCreateTrips(page, size) {
+    page = page || 0;
+    size = size || TRIP_LIST_SIZE;
+
+    return request({
+        url: API_URL + `/trips/my-tripsCreate?page=${page}&size=${size}`,
+        method: 'GET'
+    });
+}
 
 
 export function getAllJoinedTrips(page, size) {

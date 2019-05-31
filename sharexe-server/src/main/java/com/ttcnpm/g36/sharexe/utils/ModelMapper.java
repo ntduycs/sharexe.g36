@@ -38,6 +38,7 @@ public class ModelMapper {
         response.setNumOfPeople(trip.getParticipants().size());
         response.setDuration(Calculator.betweenDates(trip.getEndAt(), trip.getBeginAt()));
         response.setCreatedBy(trip.getCreatedBy());
+        response.setPrice(trip.getPricePerPerson());
 
         return response;
     }
