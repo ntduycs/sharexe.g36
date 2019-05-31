@@ -15,6 +15,7 @@ import CarListPage from './containers/CarListPage/CarListPage';
 import TripListPage from './containers/TripListPage/TripListPage';
 import HistoryPage from './containers/HistoryPage/HistoryPage';
 import HistoryDetail from './containers/HistoryPage/HistoryDetail';
+import BookCarPage from './containers/BookCarPage/BookCarPage';
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) =>
   <Route {...rest} render={props => isAuthenticated ? <Component {...rest} /> : <Redirect to='/login' />} />;
@@ -42,6 +43,9 @@ export default function router({ isAuthenticated }) {
 
             <PrivateRoute path="/history" component={HistoryPage} isAuthenticated={isAuthenticated} />
             <PrivateRoute path="/history-detail" component={HistoryDetail} isAuthenticated={isAuthenticated} />
+
+            <PrivateRoute path="/book" component={BookCarPage} isAuthenticated={isAuthenticated} />
+
             <Route component={NotFoundPage} />
           </Switch>
         </MainLayout>
