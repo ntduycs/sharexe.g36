@@ -14,6 +14,7 @@ public class TripResponse {
     private Date begin;
     private Long duration;
     private Integer numOfPeople;
+    private Long createdBy;
 
     public TripResponse() {
     }
@@ -22,12 +23,13 @@ public class TripResponse {
         this.id = id;
     }
 
-    public TripResponse(Long id, String from, String to, Date begin, Long duration, Integer numOfPeople) {
+    public TripResponse(Long id, String from, String to, Date begin, Long duration, Integer numOfPeople, Long createdBy) {
         this.id = id;
         this.from = from;
         this.to = to;
         this.begin = begin;
         this.duration = duration;
         this.numOfPeople = numOfPeople;
+        this.createdBy = createdBy;
     }
 }

@@ -18,13 +18,13 @@ public class ModelMapper {
         response.setCapacity(vehicle.getCapacity());
         response.setLicensePlate(vehicle.getLicensePlate());
 
-        List<ImageResponse> images = vehicle.getImages().stream().map(image -> {
-            ImageResponse imageResponse = new ImageResponse();
-            imageResponse.setImageUrl(image.getImageUrl());
-            return imageResponse;
-        }).collect(Collectors.toList());
+//        List<ImageResponse> images = vehicle.getImages().stream().map(image -> {
+//            ImageResponse imageResponse = new ImageResponse();
+//            imageResponse.setImageUrl(image.getImageUrl());
+//            return imageResponse;
+//        }).collect(Collectors.toList());
 
-        response.setImages(images);
+//        response.setImages(images);
 
         return response;
     }
@@ -37,6 +37,7 @@ public class ModelMapper {
         response.setBegin(trip.getBeginAt());
         response.setNumOfPeople(trip.getParticipants().size());
         response.setDuration(Calculator.betweenDates(trip.getEndAt(), trip.getBeginAt()));
+        response.setCreatedBy(trip.getCreatedBy());
 
         return response;
     }

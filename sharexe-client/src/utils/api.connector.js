@@ -135,3 +135,10 @@ export function getUserInfo(username) {
         method: 'GET'
     })
 }
+
+export function getMyTrips() {
+    return request({
+        url: API_URL + `/trips/my-trips`,
+        method:'GET'
+    })
+}

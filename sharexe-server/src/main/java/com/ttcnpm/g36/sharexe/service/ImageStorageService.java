@@ -4,6 +4,8 @@ package com.ttcnpm.g36.sharexe.service;
 import com.ttcnpm.g36.sharexe.config.ImageStorageConfig;
 import com.ttcnpm.g36.sharexe.exception.FileStorageException;
 import com.ttcnpm.g36.sharexe.exception.ImageNotFoundException;
+import com.ttcnpm.g36.sharexe.model.ImageStore;
+import com.ttcnpm.g36.sharexe.repository.ImageStorageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -22,10 +24,13 @@ import java.nio.file.StandardCopyOption;
 public class ImageStorageService {
     private final Path fileStorageLocation;
 
+    private final ImageStorageRepository imageStorageRepository;
+
     @Autowired
-    public ImageStorageService(ImageStorageConfig configuration) {
+    public ImageStorageService(ImageStorageConfig configuration, ImageStorageRepository imageStorageRepository) {
         this.fileStorageLocation = Paths.get(configuration.getUploadDirectory())
                 .normalize();
+        this.imageStorageRepository = imageStorageRepository;
 
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -34,7 +39,7 @@ public class ImageStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file) {
+    public ImageStore storeFile(MultipartFile file) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -50,7 +55,8 @@ public class ImageStorageService {
             // Replace existing file with the same name
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return fileName;
+            ImageStore newImage = new ImageStore(fileName, file.getContentType());
+            return imageStorageRepository.save(newImage);
         } catch (IOException e) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", e);
         }

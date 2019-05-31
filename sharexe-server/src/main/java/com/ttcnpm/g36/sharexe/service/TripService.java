@@ -10,14 +10,14 @@ import com.ttcnpm.g36.sharexe.repository.UserRepository;
 import com.ttcnpm.g36.sharexe.security.UserPrincipal;
 import com.ttcnpm.g36.sharexe.utils.ModelMapper;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.ttcnpm.g36.sharexe.utils.AppConstants.DEFAULT_PAGE_NUMBER;
+import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 
 @Service
 public class TripService {
@@ -95,28 +95,33 @@ public class TripService {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "beginAt");
         Page<Trip> trips = tripRepository.findAllByStatus(TripStatus.WAITING, pageable);
 
-        return getMultiItemsResponse(trips);
+//        return getMultiItemsResponse(trips);
+        return null;
     }
 
     public MultiItemsResponse<TripResponse> getAllJoinedTrips(UserPrincipal currentUser, int page, int size) {
         User user = userRepository.getOne(currentUser.getId());
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "beginAt");
-        Page<Trip> joinedTrips = tripRepository.findAllByParticipantsAndStatus(user, TripStatus.FINISHED, pageable);
+        Pageable pageable = PageRequest.of(page, size);
 
+        List<Trip> joinedTrips = tripRepository.findAllByParticipantsAndStatus(user.getId(), TripStatus.FINISHED.name());
+//        System.out.println(TripStatus.FINISHED.name());
+        
         return getMultiItemsResponse(joinedTrips);
+
     }
 
     @NotNull
-    private MultiItemsResponse<TripResponse> getMultiItemsResponse(Page<Trip> pagedTrip) {
-        if (pagedTrip.getTotalElements() == 0) {
-            return new MultiItemsResponse<>(Collections.emptyList(), pagedTrip.getNumber(),
-                    pagedTrip.getSize(), pagedTrip.getTotalElements(), pagedTrip.getTotalPages(), pagedTrip.isLast());
+    private MultiItemsResponse<TripResponse> getMultiItemsResponse(List<Trip> pagedTrip) {
+        Page<Trip> rs = new PageImpl<>(pagedTrip, new PageRequest(Integer.parseInt(DEFAULT_PAGE_NUMBER), Integer.parseInt(String.valueOf(DEFAULT_PAGE_SIZE))), pagedTrip.size());
+        if (rs.getTotalElements() == 0) {
+            return new MultiItemsResponse<>(Collections.emptyList(), rs.getNumber(),
+                    rs.getSize(), rs.getTotalElements(), rs.getTotalPages(), rs.isLast());
         }
 
-        List<TripResponse> responses = pagedTrip.map(ModelMapper::mapToTripResponse).getContent();
+        List<TripResponse> responses = rs.map(ModelMapper::mapToTripResponse).getContent();
 
-        return new MultiItemsResponse<>(responses, pagedTrip.getNumber(),
-                pagedTrip.getSize(), pagedTrip.getTotalElements(), pagedTrip.getTotalPages(), pagedTrip.isLast());
+        return new MultiItemsResponse<>(responses, rs.getNumber(),
+                rs.getSize(), rs.getTotalElements(), rs.getTotalPages(), rs.isLast());
     }
 
     public void updateExistingTrip(Long tripId, TripEditingRequest request) {

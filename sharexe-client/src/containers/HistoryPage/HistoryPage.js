@@ -1,7 +1,44 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from "react-redux";
+import {TRIP_LIST_SIZE} from "../../constants/common";
+import {getMyTrips} from "../../utils/api.connector";
 
-export default class HistoryPage extends Component {
+class HistoryPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            joined: 0,
+            created: 0
+        }
+    }
+
+    getMyJoinedTrips(page = 0, size = TRIP_LIST_SIZE) {
+        let promise = getMyTrips(page, size);
+
+        promise
+            .then(response => {
+                this.setState({
+                    trips: response.content,
+                    page: response.page,
+                    size: response.size,
+                    totalElements: response.totalElements,
+                    totalPages: response.totalPages,
+                    isLast: response.isLast,
+                    joined: response.content.reduce((acc, cur) => acc + (this.props.user.id !== cur.createdBy ? 1 :0), 0),
+                    created: response.content.reduce((acc, cur) => acc + (this.props.user.id === cur.createdBy ? 1 :0), 0)
+                })
+            })
+            .catch(error => {
+                alert("From HistoryPage component:" + error);
+            });
+    }
+
+    componentDidMount() {
+        this.getMyJoinedTrips();
+
+    }
+
     render() {
         return (
             <section className="author-profile-area">
@@ -15,8 +52,8 @@ export default class HistoryPage extends Component {
                                             <img src="images/author-avatar.jpg" alt="Presenting the broken author avatar :D" />
                                         </div>
                                         <div className="author">
-                                            <h4>Duy Nguyen</h4>
-                                            <p>Signed Up: 30 Third 2019</p>
+                                            <h4>{this.props.user.fullName}</h4>
+                                            <p>Signed Up: {this.props.user.createdAt}</p>
                                         </div>
                                         {/* end /.author */}
                                         <div className="author-badges">
@@ -98,14 +135,14 @@ export default class HistoryPage extends Component {
                                 <div className="col-md-4 col-sm-4">
                                     <div className="author-info mcolorbg4">
                                         <p>Driver</p>
-                                        <h3>10</h3>
+                                        <h3>{this.state.created}</h3>
                                     </div>
                                 </div>
                                 {/* end /.col-md-4 */}
                                 <div className="col-md-4 col-sm-4">
                                     <div className="author-info pcolorbg">
                                         <p>Passenger</p>
-                                        <h3>5</h3>
+                                        <h3>{this.state.joined}</h3>
                                     </div>
                                 </div>
                                 {/* end /.col-md-4 */}
@@ -130,7 +167,7 @@ export default class HistoryPage extends Component {
                                                     <span className="fa fa-star-half-alt" />
                                                 </li>
                                             </ul>
-                                            <span className="rating__count">(48)</span>
+                                            {/*<span className="rating__count">(48)</span>*/}
                                         </div>
                                     </div>
                                 </div>
@@ -300,3 +337,7 @@ export default class HistoryPage extends Component {
         )
     }
 }
+
+const mapStateToProps = ({ auth: { user } }) => ({ user });
+
+export default connect(mapStateToProps)(HistoryPage);

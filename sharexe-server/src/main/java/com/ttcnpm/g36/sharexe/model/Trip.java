@@ -46,10 +46,10 @@ public class Trip extends OwnerSetting {
     @Enumerated(EnumType.STRING)
     private TripStatus status;
 
-    @OneToMany(mappedBy = "tripInfo", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tripInfo", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<TripRestriction> restrictions = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "participants_in_trip",
             joinColumns = {@JoinColumn(name = "trip_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})

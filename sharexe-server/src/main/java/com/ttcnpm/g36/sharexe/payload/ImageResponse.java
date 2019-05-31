@@ -6,5 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ImageResponse {
-    private String imageUrl;
+    private String downloadLink;
+
+    public ImageResponse(String downloadLink) {
+        this.downloadLink = downloadLink;
+    }
+
+    public ImageResponse() {
+    }
 }

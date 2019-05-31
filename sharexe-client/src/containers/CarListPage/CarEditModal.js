@@ -25,6 +25,7 @@ const openNotificationWithIcon = type => {
     });
 };
 
+
 class CarEditModal extends Component {
     constructor(props) {
         super(props);
@@ -207,10 +208,12 @@ class CarEditModal extends Component {
                                                 <div className="form-group">
                                                     <label htmlFor="vimages">Images</label>
                                                     <FilePond id="vimages" labelIdle="Select your vehicle images"
+                                                              name="file"
                                                               imagePreviewHeight="100px"
                                                               allowMultiple={true} acceptedFileTypes={['image/*']}
+                                                              server="http://localhost:5000/upload"
                                                               onupdatefiles={(images) => {
-                                                                  this.setState({images: images.map(image => `${this.props.user}/` + image.file.name)});
+                                                                  this.setState({images: images.map(image => `/` + image.file.name)});
                                                               }}
 
                                                     />
