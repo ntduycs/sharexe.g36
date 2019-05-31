@@ -108,8 +108,18 @@ public class TripService {
         
         return getMultiItemsResponse(joinedTrips);
 
+
     }
 
+    public MultiItemsResponse<TripResponse> getAllCreateTrips(UserPrincipal currentUser, int page, int size) {
+        User user = userRepository.getOne(currentUser.getId());
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<Trip> joinedTrips = tripRepository.findAllByParticipantsAndStatus(user.getId(), TripStatus.WAITING.name());
+//        System.out.println(TripStatus.FINISHED.name());
+
+        return getMultiItemsResponse(joinedTrips);
+    }
     @NotNull
     private MultiItemsResponse<TripResponse> getMultiItemsResponse(List<Trip> pagedTrip) {
         Page<Trip> rs = new PageImpl<>(pagedTrip, new PageRequest(Integer.parseInt(DEFAULT_PAGE_NUMBER), Integer.parseInt(String.valueOf(DEFAULT_PAGE_SIZE))), pagedTrip.size());
