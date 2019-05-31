@@ -102,6 +102,15 @@ public class TripController {
         return tripService.getAllWaitingTrips(page, size);
     }
 
+
+//    @Transactional
+//    @GetMapping("/my-trips-byuser")
+//    public MultiItemsResponse<TripResponse> getAllTripsByUser(@CurrentUser UserPrincipal currentUser,
+//                                                              @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+//                                                              @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+//        return tripService.getAllCreateTrips(currentUser, page, size);
+//    }
+
     @Transactional
     @GetMapping("/my-trips")
     public MultiItemsResponse<TripResponse> getAllJoinedTrips(@CurrentUser UserPrincipal currentUser,
@@ -112,7 +121,7 @@ public class TripController {
 
     @Transactional
     @GetMapping("/{tripId}")
-    public TripResponse getVehicleById(@CurrentUser UserPrincipal currentUser, @PathVariable Long tripId) {
+    public TripResponse getTripById(@CurrentUser UserPrincipal currentUser, @PathVariable Long tripId) {
         return tripService.getTripById(currentUser, tripId);
     }
 

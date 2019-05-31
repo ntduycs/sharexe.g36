@@ -57,7 +57,7 @@ public class TripService {
         newTrip.setDescription(request.getDescription());
         newTrip.setStatus(TripStatus.WAITING); // by default
 
-        request.getRestrictions().forEach(restriction -> newTrip.addRestriction(new TripRestriction(restriction.getText())));
+//        request.getRestrictions().forEach(restriction -> newTrip.addRestriction(new TripRestriction(restriction.getText())));
     }
 
     public void createJoiningRequest(Trip trip, Long tripOwnerId, Long senderId) {
@@ -101,6 +101,16 @@ public class TripService {
         return getMultiItemsResponse(trips);
     }
 
+
+
+
+//    public MultiItemsResponse<TripResponse> getAllCreateTrips(UserPrincipal currentUser, int page, int size) {
+//        User user = userRepository.getOne(currentUser.getId());
+//        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "beginAt");
+//        Page<Trip> createTrips = tripRepository.findAllCreateTrip(user, TripStatus.WAITING, pageable);
+//
+//        return getMultiItemsResponse(createTrips);
+//    }
     public MultiItemsResponse<TripResponse> getAllJoinedTrips(UserPrincipal currentUser, int page, int size) {
         User user = userRepository.getOne(currentUser.getId());
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "beginAt");
@@ -131,9 +141,9 @@ public class TripService {
         trip.setEndAt(request.getEndAt());
         trip.setPricePerPerson(request.getPrice());
 
-        trip.getRestrictions().clear();
+//        trip.getRestrictions().clear();
 
-        request.getRestrictions().forEach(restriction -> trip.addRestriction(new TripRestriction(restriction.getText())));
+//        request.getRestrictions().forEach(restriction -> trip.addRestriction(new TripRestriction(restriction.getText())));
 
         tripRepository.save(trip);
     }
