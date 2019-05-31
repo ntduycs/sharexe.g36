@@ -13,7 +13,8 @@ import java.util.List;
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
     List<Trip> findAllByBeginAt(Date currentDate);
-    Page<Trip> findAllByStatus(TripStatus status, Pageable pageable);
+    @Query(nativeQuery = true, value = "select t.* from trip t where status = ?1 order by t.created_at desc")
+    List<Trip> findAllByStatus(String status);
 
     @Query(nativeQuery = true,value = "select t.* from trip t inner join participants_in_trip pt on t.id = pt.trip_id where user_id  = ?1 and status = ?2 order by t.created_at desc")
     List<Trip> findAllByParticipantsAndStatus(Long userId, String status);
